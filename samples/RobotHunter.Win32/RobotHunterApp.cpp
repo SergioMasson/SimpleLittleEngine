@@ -7,10 +7,12 @@
 #include "graphics/texture2D.h"
 #include "graphics/PostProcessing/Bloom.h"
 #include "graphics/PostProcessing/FXAA.h"
+#include "physics/rigidBody.h"
 #include "audio/audioCore.h"
 #include "math/random.h"
 #include "input.h"
 #include "colors.h"
+#include "playerControllerPhysics.h"
 
 #include "pbrPS.h"
 #include "pbrVS.h"
@@ -32,6 +34,17 @@ LightData dirLight;
 
 float currentTime;
 
+struct FilterGroup
+{
+	enum Enum
+	{
+		ePLAYER = (1 << 0),
+		eENEMY = (1 << 1),
+		ePILAR = (1 << 2),
+		eFLOOR = (1 << 3)
+	};
+};
+
 void RobotHunterApp::Startup(void)
 {
 	enemiesLeft = ENEMY_COUNT;
@@ -45,8 +58,8 @@ void RobotHunterApp::Startup(void)
 	CreateGUI();
 	CreateCamera();
 
-	m_player->AddComponent<PlayerController>(math::Vector3(0, 1, 0));
-	audio::PlayAudioFile(L"audioFiles/test.wav", true);
+	m_player->AddComponent<PlayerControllerPhysics>(math::Vector3(0, 1, 0));
+	//audio::PlayAudioFile(L"audioFiles/test.wav", true);
 }
 
 bool RobotHunterApp::IsDone()
@@ -86,9 +99,6 @@ void RobotHunterApp::Update(float deltaT, float totalTime)
 	for (auto behaviours : g_activeBehaviours)
 		behaviours->Update(deltaT);
 
-	if (CheckPillarCollision() || !CheckIfInsideScene())
-		m_player->SetPosition(oldPlayerPosition);
-
 	CheckForEnemyCollision();
 
 	if (m_enemiesLeft.size() != 0)
@@ -101,6 +111,12 @@ void RobotHunterApp::Update(float deltaT, float totalTime)
 
 	m_counterText->SetText(L"TOTAL TIME: " + std::to_wstring(m_time));
 	m_enemiesLeftText->SetText(L" X " + std::to_wstring(enemiesLeft));
+}
+
+void RobotHunterApp::FixedUpdate(float deltaT, float totalTime)
+{
+	for (auto behaviours : g_activeBehaviours)
+		behaviours->FixedUpdate(deltaT);
 }
 
 void RobotHunterApp::RenderScene(void)
@@ -140,7 +156,7 @@ void RobotHunterApp::Resize(uint32_t width, uint32_t height)
 void RobotHunterApp::CreateCamera()
 {
 	auto mainCamera = new Camera();
-	math::Vector3 cameraPosition{ 0.0f, 2.0f, 10.0f };
+	math::Vector3 cameraPosition{ 0.0f, 4.0f, 10.0f };
 	math::Vector3 target{ 0, 0, 0 };
 	math::Vector3 up{ 0.0f, 1.0f, 0.0f };
 	mainCamera->SetEyeAtUp(cameraPosition, target, up);
@@ -192,8 +208,14 @@ void RobotHunterApp::CreateObjects()
 	playerMaterial.Roughness = 0.2f;
 	playerMaterial.Color = Color::White;
 
-	m_player = new GameObject();
+	m_player = new GameObject(math::Vector3(0, 1, 0));
+	m_player->SetName(L"Player");
 	auto playerRenderer = m_player->AddMeshRenderer(&playerCharacter, playerMaterial);
+	auto playerRigidBody = m_player->AddComponent<physics::RigidBody>(10.0f, false);
+	playerRigidBody->AddBoxCollider(2, 1, 1, math::Vector3(0, 0.5f, 0));
+	playerRigidBody->IsKinematic(false);
+
+	//playerRigidBody->SetCollisionFilters(FilterGroup::Enum::ePLAYER, FilterGroup::Enum::eENEMY | FilterGroup::Enum::ePILAR);
 	playerRenderer->SetAlbedoTexture(playerTexture);
 	playerRenderer->SetNormalMap(normalMap);
 	playerRenderer->SetEmissionMap(playerEmissionMap);
@@ -205,6 +227,7 @@ void RobotHunterApp::CreateObjects()
 	trophyMaterial.Color = Color::White;
 
 	m_trophy = new GameObject();
+	m_trophy->SetName(L"Trophy");
 	m_trophy->SetParent(m_player);
 	m_trophy->SetPosition(math::Vector3(0, 1.2f, 0));
 	m_trophy->SetScale(math::Vector3(0.5f, 0.5f, 0.5f));
@@ -224,11 +247,33 @@ void RobotHunterApp::CreateObjects()
 	floorMaterial.Roughness = 0.1f;
 
 	m_floor = new GameObject();
+	m_floor->SetName(L"Floor");
 	auto floorRenderer = m_floor->AddMeshRenderer(&quad, floorMaterial);
 	floorRenderer->SetAlbedoTexture(floorTexture);
 	floorRenderer->SetNormalMap(floorNormalMap);
 	floorRenderer->SetEmissionMap(defaultEmissionMap);
 	floorRenderer->SetTextureScale(20, 20);
+
+	auto floorRigidBodyComponent = m_floor->AddComponent<physics::RigidBody>(10, true);
+	floorRigidBodyComponent->AddPlaneCollider(math::Vector3(0, -0.5, 0), math::Vector3(0, 1, 0));
+	//floorRigidBodyComponent->SetCollisionFilters(FilterGroup::Enum::eFLOOR, FilterGroup::Enum::ePLAYER);
+
+	//Invisible walls.
+	auto wall1 = new GameObject();
+	auto wall1RigidBodyComponent = wall1->AddComponent<physics::RigidBody>(10, true);
+	wall1RigidBodyComponent->AddPlaneCollider(math::Vector3(50, 0, 0), math::Vector3(-1, 0, 0));
+
+	auto wall2 = new GameObject();
+	auto wall2RigidBodyComponent = wall2->AddComponent<physics::RigidBody>(10, true);
+	wall2RigidBodyComponent->AddPlaneCollider(math::Vector3(-50, 0, 0), math::Vector3(1, 0, 0));
+
+	auto wall3 = new GameObject();
+	auto wall3RigidBodyComponent = wall3->AddComponent<physics::RigidBody>(10, true);
+	wall3RigidBodyComponent->AddPlaneCollider(math::Vector3(0, 0, 50), math::Vector3(0, 0, -1));
+
+	auto wall4 = new GameObject();
+	auto wall4RigidBodyComponent = wall4->AddComponent<physics::RigidBody>(10, true);
+	wall4RigidBodyComponent->AddPlaneCollider(math::Vector3(0, 0, -50), math::Vector3(0, 0, 1));
 
 	m_sceneMeshRenderer.push_back(floorRenderer);
 }
@@ -252,6 +297,10 @@ void RobotHunterApp::CreateEnemy(graphics::MeshData* enemyData, graphics::Textur
 		auto enemyPosition = math::Vector3(enemyX, 0, enemyY);
 
 		auto enemyGO = new GameObject(enemyPosition, math::Quaternion());
+		enemyGO->SetName(L"Enemy_" + std::to_wstring(i));
+
+		auto enemyRigidBody = enemyGO->AddComponent<physics::RigidBody>(10.0f, true);
+		enemyRigidBody->AddBoxCollider(2, 0.7f, 0.7f, math::Vector3(0, 0.5f, 0));
 
 		auto enemyRenderer = enemyGO->AddMeshRenderer(enemyData, material1);
 		enemyRenderer->SetAlbedoTexture(enemyTexture);
@@ -280,6 +329,8 @@ void RobotHunterApp::CreatePilars(graphics::MeshData* pilarData, graphics::Textu
 		math::Vector3 distance;
 
 		auto pilar = new GameObject(math::Vector3(0, 5, 0), math::Quaternion());
+		pilar->SetName(L"Pilar");
+
 		auto pilarRenderer = pilar->AddMeshRenderer(pilarData, material1);
 		pilarRenderer->SetAlbedoTexture(pilarTexture);
 		pilarRenderer->SetNormalMap(pilarNormal);
@@ -306,6 +357,10 @@ void RobotHunterApp::CreatePilars(graphics::MeshData* pilarData, graphics::Textu
 			for (auto otherPilar : m_pilars)
 				overlapingEnemy = overlapingEnemy || otherPilar->WBoudingBox().IsOverlaping(pilarBound);
 		} while (math::Length(distance) <= 10.0f && overlapingEnemy);
+
+		auto pilarRigidBody = pilar->AddComponent<physics::RigidBody>(10.0f, true);
+		pilarRigidBody->AddCapsuleCollider(1, 10);
+		pilarRigidBody->SetCollisionFilters(FilterGroup::Enum::ePILAR, FilterGroup::Enum::ePLAYER);
 
 		m_sceneMeshRenderer.push_back(pilarRenderer);
 		m_pilars.push_back(pilarRenderer);
@@ -397,16 +452,6 @@ void RobotHunterApp::CheckForEnemyCollision()
 			++it;
 		}
 	}
-}
-
-bool RobotHunterApp::CheckPillarCollision()
-{
-	for (auto pilar : m_pilars)
-	{
-		if (pilar->WBoudingBox().IsOverlaping(m_player->GetMeshRenderer()->WBoudingBox()))
-			return true;
-	}
-	return false;
 }
 
 bool RobotHunterApp::CheckIfInsideScene()

@@ -12,9 +12,13 @@ public:
 	// Decide if you want the app to exit.  By default, app continues until the 'ESC' key is pressed.
 	virtual bool IsDone(void) = 0;
 
-	// The update method will be invoked once per frame.  Both state updating and scene
+	// The update method will be invoked once per frame AFTER the physics run. Both state updating and scene
 	// rendering should be handled by this method.
 	virtual void Update(float deltaT, float totalTime) = 0;
+
+	// The update method will be invoked once per frame BEFORE all physics run. Both state updating and scene
+	// rendering should be handled by this method.
+	virtual void FixedUpdate(float deltaT, float totalTime) = 0;
 
 	// Official rendering pass
 	virtual void RenderScene(void) = 0;

@@ -41,8 +41,16 @@ bool UpdateApplication(IGameApp& app)
 
 	previewsFrameTick = currentTick;
 
-	physics::Update(deltaTime);
+	//Update all user inputs.
 	Input::Update(deltaTime);
+
+	//Update things before physics.
+	app.FixedUpdate(deltaTime, totalTIme);
+
+	//Update physics calculations.
+	physics::Update(deltaTime);
+
+	//Update things after physics.
 	app.Update(deltaTime, totalTIme);
 
 	//Render scene.

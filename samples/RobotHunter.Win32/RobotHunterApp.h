@@ -27,6 +27,7 @@ public:
 	virtual void Cleanup(void) override;
 	virtual bool IsDone(void) override;
 	virtual void Update(float deltaT, float totalTime) override;
+	virtual void FixedUpdate(float deltaT, float totalTime) override;
 	virtual void RenderScene(void) override;
 	virtual void RenderUI(void) override;
 	virtual void Resize(uint32_t width, uint32_t height) override;
@@ -66,6 +67,5 @@ private:
 	void CreatePilars(graphics::MeshData* pilarData, graphics::Texture2D* pilarTexture, graphics::Texture2D* pilarNormal, graphics::Texture2D* emissionMap);
 	void CreateGUI();
 	void CheckForEnemyCollision();
-	bool CheckPillarCollision();
 	bool CheckIfInsideScene();
 };

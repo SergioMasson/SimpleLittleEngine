@@ -5,11 +5,12 @@
 std::set<BehaviourComponent*> g_activeBehaviours;
 std::set<GameObject*> g_activeGameObjects;
 
-GameObject::GameObject(math::Vector3 position, math::Quaternion rotation, GameObject* parent) :
+GameObject::GameObject(math::Vector3 position, math::Quaternion rotation, GameObject* parent, std::wstring name) :
 	m_transform{ rotation, position },
 	m_meshRenderer{ nullptr },
 	m_parent{ parent },
-	m_isActive{ true }
+	m_isActive{ true },
+	m_name{ name }
 {
 	g_activeGameObjects.insert(this);
 }

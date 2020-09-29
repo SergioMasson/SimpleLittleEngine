@@ -19,7 +19,7 @@ extern std::set<GameObject*> g_activeGameObjects;
 class GameObject
 {
 public:
-	GameObject(math::Vector3 position = math::Vector3(0, 0, 0), math::Quaternion rotation = math::Quaternion(0, 0, 0), GameObject* parent = nullptr);
+	GameObject(math::Vector3 position = math::Vector3(0, 0, 0), math::Quaternion rotation = math::Quaternion(0, 0, 0), GameObject* parent = nullptr, std::wstring name = L"Default");
 	~GameObject();
 	GameObject(const GameObject&) = delete;
 	GameObject& operator=(const GameObject&) = delete;
@@ -71,6 +71,9 @@ public:
 	math::Transform GetTransform() const;
 	math::Transform GetLocalTransform() const;
 
+	void SetName(std::wstring name) { m_name = name; }
+	std::wstring const& GetName() const { return m_name; };
+
 	void SetParent(GameObject* parent);
 	void SetPosition(math::Vector3 position);
 	void SetRotation(math::Quaternion rotation);
@@ -90,6 +93,7 @@ public:
 private:
 	math::Transform m_transform;
 	graphics::MeshRenderer* m_meshRenderer;
+	std::wstring m_name;
 	GameObject* m_parent;
 	std::set<Component*> m_components;
 	bool m_isActive;
@@ -97,6 +101,9 @@ private:
 
 class Component
 {
+public:
+	GameObject* GetGameObject() { return m_gameObject; }
+
 protected:
 	Component(GameObject* gameObject) : m_gameObject{ gameObject }
 	{
@@ -122,4 +129,5 @@ public:
 	};
 
 	virtual void Update(float daltaT) = 0;
+	virtual void FixedUpdate(float deltaT) = 0;
 };

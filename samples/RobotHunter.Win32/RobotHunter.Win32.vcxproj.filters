@@ -30,6 +30,9 @@
     <ClCompile Include="playerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="playerControllerPhysics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="playerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playerControllerPhysics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

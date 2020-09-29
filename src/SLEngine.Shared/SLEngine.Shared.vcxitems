@@ -43,7 +43,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)physics\collider.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)physics\physicsCore.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)physics\rigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)systemTime.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +88,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)math\transform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)math\vector3.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)physics\collider.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)physics\physicsCore.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)physics\rigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)systemTime.h" />
   </ItemGroup>
   <ItemGroup>

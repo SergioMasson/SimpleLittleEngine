@@ -172,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="playerController.cpp" />
+    <ClCompile Include="playerControllerPhysics.cpp" />
     <ClCompile Include="RobotHunterApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="playerController.h" />
+    <ClInclude Include="playerControllerPhysics.h" />
     <ClInclude Include="RobotHunterApp.h" />
   </ItemGroup>
   <ItemGroup>

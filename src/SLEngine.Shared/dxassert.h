@@ -1,9 +1,13 @@
 #pragma once
 
+#include <string>
 //Utilitie functions to help debuging HRESULT.
 
 inline void Print(const char* msg) { OutputDebugStringA(msg); }
 inline void Print(const wchar_t* msg) { OutputDebugStringW(msg); }
+
+inline void Print(std::string const& msg) { Print(msg.c_str()); }
+inline void Print(std::wstring const& msg) { Print(msg.c_str()); }
 
 inline void Printf(const char* format, ...)
 {
