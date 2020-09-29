@@ -59,7 +59,7 @@ void RobotHunterApp::Startup(void)
 	CreateCamera();
 
 	m_player->AddComponent<PlayerControllerPhysics>(math::Vector3(0, 1, 0));
-	//audio::PlayAudioFile(L"audioFiles/test.wav", true);
+	audio::PlayAudioFile(L"audioFiles/test.wav", true);
 }
 
 bool RobotHunterApp::IsDone()

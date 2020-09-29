@@ -211,6 +211,69 @@
     <Image Include="icons\trophy_isometric.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
+    <Image Include="textures\bricks2.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\bricks2_nmap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\bricks3.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\character.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\checkboard.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\checkboard_mips.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\congratulations.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\defaultEmissionMap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\default_nmap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\emissionMap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\enemy.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\enemy_inv.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\littleRobot.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\neutralNormal.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\newEmissionMap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\pbr\brdf_lut.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\pbr\skybox1_irradiance.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\pbr\skybox_specular.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\stage.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\tile_nmap.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="textures\world.dds">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="models\enemy.model">
