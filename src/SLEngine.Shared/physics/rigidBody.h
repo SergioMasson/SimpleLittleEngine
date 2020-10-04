@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../gameObject.h"
+#include "collider.h"
 
 namespace physics
 {
@@ -21,7 +22,7 @@ namespace physics
 		void AddPlaneCollider(math::Vector3 position, math::Vector3 normal);
 		void SetCollisionFilters(uint32_t mask, uint32_t filter);
 
-		math::Vector3 GetVelocity() const;
+		math::Vector3 GetVelocity();
 
 		void SetVelocity(math::Vector3 velocity);
 		void AddVelocity(math::Vector3 velocity, float maxV = 0.0f);
@@ -31,6 +32,11 @@ namespace physics
 		void SetRotation(math::Quaternion rotation);
 		void MovePosition(math::Vector3 position);
 		void MoveRotation(math::Quaternion rotation);
+
+		bool CheckCollisionWith(uint32_t collisionLayer);
+		bool IsOverlaping(RigidBody* other);
+
+		Collider* GetCollider() { return &m_collider; };
 
 		/**
 		\brief Set Kinematic behaviur.
@@ -58,7 +64,7 @@ namespace physics
 	private:
 		RigidBody(GameObject* gameObject, float mass, bool isStatic = false);
 	private:
-		Collider* m_collider;
+		Collider m_collider;
 
 		float m_mass;
 		bool m_isKinematic;

@@ -77,6 +77,12 @@ void GameObject::SetScale(math::Vector3 scale)
 	m_transform.SetScale(scale);
 }
 
+void GameObject::NotifyCollision(physics::RigidBody* other)
+{
+	for (BehaviourComponent* component : m_behaviourComponents)
+		component->OnCollision(other);
+}
+
 graphics::MeshRenderer* GameObject::AddMeshRenderer(graphics::MeshData* data, graphics::Material material)
 {
 	m_meshRenderer = new graphics::MeshRenderer(this, data, material);

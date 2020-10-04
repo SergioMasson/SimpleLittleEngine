@@ -12,6 +12,19 @@ public:
 		m_color.w = 0.0f;
 	}
 
+	inline Color(DirectX::XMFLOAT4 vec)
+	{
+		m_color = vec;
+	}
+
+	inline Color(DirectX::XMFLOAT3 vec, float alpha)
+	{
+		m_color.x = vec.x;
+		m_color.y = vec.y;
+		m_color.z = vec.z;
+		m_color.w = alpha;
+	}
+
 	inline Color(UINT32 rgb, FLOAT a = 1.0)
 	{
 		Init(rgb, a);

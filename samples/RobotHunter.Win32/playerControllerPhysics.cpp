@@ -136,12 +136,10 @@ void PlayerControllerPhysics::FixedUpdate(float deltaT)
 
 	//math::Vector3 position = m_gameObject->GetPosition() + motionVector;
 	math::Vector3 position = motionVector;
+	auto motionMag = math::Length(motionVector);
 
 	//m_PlayerRigidBody->SetVelocity(position * 100);
-	m_PlayerRigidBody->AddVelocity(position * 7.0f, 30.0f);
-	//m_PlayerRigidBody->AddForce(position * 100);
-
-	//m_gameObject->SetPosition(position);
+	m_PlayerRigidBody->AddVelocity(position * 20.0f, 90.0f * motionMag);
 
 	//Update player orientation
 	if (math::Length(motionVector) > 0.000001f)

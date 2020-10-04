@@ -17,7 +17,7 @@ void physics::RigidBody::AddBoxCollider(float width, float height, float depth, 
 
 void physics::RigidBody::AddCapsuleCollider(float radius, float halfHeight)
 {
-	physics::CreateCapsuleCollider(this, &m_collider, radius, halfHeight);
+	physics::CreateCapsuleCollider(this, radius, halfHeight);
 }
 
 void physics::RigidBody::AddPlaneCollider(math::Vector3 position, math::Quaternion rotation)
@@ -38,6 +38,11 @@ void physics::RigidBody::AddPlaneCollider(math::Vector3 position, math::Vector3 
 void physics::RigidBody::SetCollisionFilters(uint32_t mask, uint32_t filter)
 {
 	physics::RigidBodySetCollisionMask(this, mask, filter);
+}
+
+math::Vector3 physics::RigidBody::GetVelocity()
+{
+	return physics::RigidBodyGetVelocity(this);
 }
 
 void physics::RigidBody::SetVelocity(math::Vector3 velocity)
@@ -87,6 +92,16 @@ void physics::RigidBody::MoveRotation(math::Quaternion rotation)
 {
 	m_targetRotation = rotation;
 	m_hasTarget = true;
+}
+
+bool physics::RigidBody::CheckCollisionWith(uint32_t collisionLayer)
+{
+	return false;
+}
+
+bool physics::RigidBody::IsOverlaping(RigidBody* other)
+{
+	return physics::RigidBodyIsOverlaping(this, other);
 }
 
 void physics::RigidBody::IsKinematic(bool isKinematic)

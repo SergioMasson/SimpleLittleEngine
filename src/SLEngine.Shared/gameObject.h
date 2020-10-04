@@ -13,6 +13,11 @@ namespace graphics
 	struct MeshData;
 }
 
+namespace physics
+{
+	class RigidBody;
+}
+
 extern std::set<BehaviourComponent*> g_activeBehaviours;
 extern std::set<GameObject*> g_activeGameObjects;
 
@@ -27,6 +32,12 @@ public:
 	template<typename T, typename ...Param> T* AddComponent(Param... params)
 	{
 		T* component = new T(this, std::forward<Param>(params)...);
+
+		BehaviourComponent* behaviur = dynamic_cast<BehaviourComponent*>(component);
+
+		if (behaviur != nullptr)
+			m_behaviourComponents.insert(behaviur);
+
 		m_components.insert(component);
 		return component;
 	}
@@ -79,6 +90,8 @@ public:
 	void SetRotation(math::Quaternion rotation);
 	void SetScale(math::Vector3 scale);
 
+	void NotifyCollision(physics::RigidBody* other);
+
 	graphics::MeshRenderer* AddMeshRenderer(graphics::MeshData* data, graphics::Material material);
 
 	graphics::MeshRenderer* GetMeshRenderer()
@@ -96,6 +109,7 @@ private:
 	std::wstring m_name;
 	GameObject* m_parent;
 	std::set<Component*> m_components;
+	std::set<BehaviourComponent*> m_behaviourComponents;
 	bool m_isActive;
 };
 
@@ -103,6 +117,7 @@ class Component
 {
 public:
 	GameObject* GetGameObject() { return m_gameObject; }
+	std::wstring GetName() const { return m_gameObject->GetName(); };
 
 protected:
 	Component(GameObject* gameObject) : m_gameObject{ gameObject }
@@ -128,6 +143,7 @@ public:
 		g_activeBehaviours.insert(this);
 	};
 
-	virtual void Update(float daltaT) = 0;
-	virtual void FixedUpdate(float deltaT) = 0;
+	virtual void Update(float daltaT) {};
+	virtual void FixedUpdate(float deltaT) {};
+	virtual void OnCollision(physics::RigidBody* other) {};
 };

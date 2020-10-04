@@ -16,6 +16,7 @@
 
 #include "pbrPS.h"
 #include "pbrVS.h"
+
 #include <string>
 
 #define ENEMY_COUNT 10
@@ -212,10 +213,9 @@ void RobotHunterApp::CreateObjects()
 	m_player->SetName(L"Player");
 	auto playerRenderer = m_player->AddMeshRenderer(&playerCharacter, playerMaterial);
 	auto playerRigidBody = m_player->AddComponent<physics::RigidBody>(10.0f, false);
-	playerRigidBody->AddBoxCollider(2, 1, 1, math::Vector3(0, 0.5f, 0));
+	playerRigidBody->AddBoxCollider(2, 1, 1, math::Vector3(0, 1.0f, 0));
 	playerRigidBody->IsKinematic(false);
-
-	//playerRigidBody->SetCollisionFilters(FilterGroup::Enum::ePLAYER, FilterGroup::Enum::eENEMY | FilterGroup::Enum::ePILAR);
+	playerRigidBody->SetCollisionFilters(FilterGroup::Enum::ePLAYER, FilterGroup::Enum::eENEMY);
 	playerRenderer->SetAlbedoTexture(playerTexture);
 	playerRenderer->SetNormalMap(normalMap);
 	playerRenderer->SetEmissionMap(playerEmissionMap);
@@ -255,7 +255,7 @@ void RobotHunterApp::CreateObjects()
 	floorRenderer->SetTextureScale(20, 20);
 
 	auto floorRigidBodyComponent = m_floor->AddComponent<physics::RigidBody>(10, true);
-	floorRigidBodyComponent->AddPlaneCollider(math::Vector3(0, -0.5, 0), math::Vector3(0, 1, 0));
+	floorRigidBodyComponent->AddPlaneCollider(math::Vector3(0, 0, 0), math::Vector3(0, 1, 0));
 	//floorRigidBodyComponent->SetCollisionFilters(FilterGroup::Enum::eFLOOR, FilterGroup::Enum::ePLAYER);
 
 	//Invisible walls.
@@ -299,8 +299,9 @@ void RobotHunterApp::CreateEnemy(graphics::MeshData* enemyData, graphics::Textur
 		auto enemyGO = new GameObject(enemyPosition, math::Quaternion());
 		enemyGO->SetName(L"Enemy_" + std::to_wstring(i));
 
-		auto enemyRigidBody = enemyGO->AddComponent<physics::RigidBody>(10.0f, true);
-		enemyRigidBody->AddBoxCollider(2, 0.7f, 0.7f, math::Vector3(0, 0.5f, 0));
+		auto enemyRigidBody = enemyGO->AddComponent<physics::RigidBody>(1.0f, false);
+		enemyRigidBody->AddBoxCollider(2, 0.7f, 0.7f, math::Vector3(0, 1.0f, 0));
+		enemyRigidBody->SetCollisionFilters(FilterGroup::Enum::eENEMY, FilterGroup::Enum::ePLAYER);
 
 		auto enemyRenderer = enemyGO->AddMeshRenderer(enemyData, material1);
 		enemyRenderer->SetAlbedoTexture(enemyTexture);
@@ -404,20 +405,17 @@ void RobotHunterApp::CheckForEnemyCollision()
 {
 	auto it = m_enemiesLeft.begin();
 
+	auto playerRigidBody = m_player->GetComponent<physics::RigidBody>();
+
 	while (it != m_enemiesLeft.end())
 	{
 		GameObject* gameObject = *it;
 		Enemy* enemy = gameObject->GetComponent<Enemy>();
 
-		if (enemy->WBoudingBox().IsOverlaping(m_player->GetMeshRenderer()->WBoudingBox()))
+		if (enemy->IsDetected())
 		{
 			it = m_enemiesLeft.erase(it);
 			enemiesLeft--;
-
-			enemy->SetDetected();
-
-			//Play audio
-			audio::PlayAudioFile(L"audioFiles/enemy.wav");
 
 			if (enemiesLeft == 0)
 			{

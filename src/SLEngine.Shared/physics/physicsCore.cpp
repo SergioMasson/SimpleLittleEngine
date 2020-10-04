@@ -29,6 +29,55 @@ static std::map<physics::Collider*, PxShape*> g_activeColliders{};
 
 static bool isFirstDelta = true;
 
+class SimulationEventCallbacks : public PxSimulationEventCallback
+{
+	void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) override {};
+	void onWake(PxActor** actors, PxU32 count) override {};
+	void onSleep(PxActor** actors, PxU32 count) override {};
+
+	void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override
+	{
+		auto actor1 = pairHeader.actors[0];
+		auto actor2 = pairHeader.actors[1];
+
+		auto rigidBody1 = reinterpret_cast<physics::RigidBody*>(actor1->userData);
+		auto rigidBody2 = reinterpret_cast<physics::RigidBody*>(actor2->userData);
+
+		auto GO1 = rigidBody1->GetGameObject();
+		auto GO2 = rigidBody2->GetGameObject();
+
+		GO1->NotifyCollision(rigidBody2);
+		GO2->NotifyCollision(rigidBody1);
+	};
+
+	void onTrigger(PxTriggerPair* pairs, PxU32 count) override {};
+	void onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count) override {};
+};
+
+static SimulationEventCallbacks callback{};
+
+PxFilterFlags FilterShader(
+	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+	// let triggers through
+	if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+	{
+		pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+		return PxFilterFlag::eDEFAULT;
+	}
+	// generate contacts for all that were not filtered above
+	pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+	// trigger the contact callback for pairs (A,B) where
+	// the filtermask of A contains the ID of B and vice versa.
+	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+	return PxFilterFlag::eDEFAULT;
+}
+
 PxVec3 GetPXVec(math::Vector3 const& vec)
 {
 	DirectX::XMFLOAT3 vecL = vec;
@@ -50,7 +99,8 @@ void CreateScene()
 {
 	PxSceneDesc sceneDesc(g_Physics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0, -30.0f, 0);
-	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+	sceneDesc.filterShader = &FilterShader;
+	sceneDesc.simulationEventCallback = &callback;
 
 	const auto processor_count = std::thread::hardware_concurrency();
 
@@ -179,6 +229,8 @@ void physics::Update(float deltaT)
 	}
 }
 
+#pragma region Rigid body
+
 void physics::CreateRigidBody(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation, float inialMass, bool isKinematic, bool isStatic)
 {
 	DirectX::XMFLOAT3 positionL = position;
@@ -217,6 +269,23 @@ void physics::RigidBodySetMass(RigidBody* rigidBody, float mass)
 
 	if (dynamicActor != nullptr)
 		PxRigidBodyExt::updateMassAndInertia(*dynamicActor, mass);
+}
+
+math::Vector3 physics::RigidBodyGetVelocity(RigidBody* rigidBody)
+{
+	auto actor = g_activeRigidBodies[rigidBody];
+
+	auto dynamicActor = actor->is<PxRigidDynamic>();
+
+	ASSERT(dynamicActor, "RigidBodyGetVelocity: Actor is not a dynamic actor.");
+
+	if (dynamicActor != nullptr)
+	{
+		auto v = dynamicActor->getLinearVelocity();
+		return GetVec(v);
+	}
+
+	return math::Vector3(0, 0, 0);
 }
 
 void physics::RigidBodySetVelocity(RigidBody* rigidBody, math::Vector3 velocity)
@@ -355,7 +424,32 @@ void physics::RigidBodySetRotation(RigidBody* rigidBody, math::Quaternion rotati
 	}
 }
 
-void physics::CreateCapsuleCollider(RigidBody* rigidBody, Collider** collider, float radius, float halfHeight)
+bool physics::RigidBodyCheckCollisionWith(RigidBody* rigidBody, uint32_t collisionLayer)
+{
+	return false;
+}
+
+bool physics::RigidBodyIsOverlaping(RigidBody* rigidBody1, RigidBody* rigidBody2)
+{
+	auto collider1 = rigidBody1->GetCollider();
+	auto collider2 = rigidBody2->GetCollider();
+
+	auto shape1 = g_activeColliders[collider1];
+	auto shape2 = g_activeColliders[collider1];
+
+	auto actor1 = g_activeRigidBodies[rigidBody1];
+	auto actor2 = g_activeRigidBodies[rigidBody2];
+
+	PxGeometry geometry1 = shape1->getGeometry().box();
+	PxGeometry geometry2 = shape2->getGeometry().box();
+
+	PxTransform transform1 = shape1->getLocalPose() * actor1->getGlobalPose();
+	PxTransform transform2 = shape2->getLocalPose() * actor2->getGlobalPose();
+
+	return PxGeometryQuery::overlap(geometry1, transform1, geometry2, transform2);
+}
+
+void physics::CreateCapsuleCollider(RigidBody* rigidBody, float radius, float halfHeight)
 {
 	PxRigidActor* actor = g_activeRigidBodies[rigidBody];
 
@@ -368,6 +462,10 @@ void physics::CreateCapsuleCollider(RigidBody* rigidBody, Collider** collider, f
 	PxTransform transform = actor->getGlobalPose();
 	aCapsuleShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 	aCapsuleShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aCapsuleShape });
 }
 
 void physics::RigidBodyCreateBoxCollider(RigidBody* rigidBody, float width, float height, float depth, math::Vector3 relativePositon)
@@ -381,6 +479,10 @@ void physics::RigidBodyCreateBoxCollider(RigidBody* rigidBody, float width, floa
 	aBoxShape->setLocalPose(relativePose);
 	aBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 	aBoxShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aBoxShape });
 }
 
 void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation)
@@ -393,6 +495,10 @@ void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 p
 	PxShape* aPlaneShape = PxRigidActorExt::createExclusiveShape(*actor, geometry, *aMaterial);
 	PxTransform relativePose{ GetPXVec(position), GetPXQuat(rotation) };
 	aPlaneShape->setLocalPose(relativePose);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aPlaneShape });
 }
 
 void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, float x, float y, float z, float w)
@@ -407,6 +513,10 @@ void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, float x, float 
 	PxTransform relativePose = PxTransformFromPlaneEquation(planeEquation);
 
 	aPlaneShape->setLocalPose(relativePose);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aPlaneShape });
 }
 
 void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, float distance)
@@ -421,6 +531,10 @@ void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 p
 	PxTransform relativePose = PxTransformFromPlaneEquation(planeEquation);
 
 	aPlaneShape->setLocalPose(relativePose);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aPlaneShape });
 }
 
 void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Vector3 normal)
@@ -435,6 +549,32 @@ void physics::RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 p
 	PxTransform relativePose = PxTransformFromPlaneEquation(planeEquation);
 
 	aPlaneShape->setLocalPose(relativePose);
+
+	auto collider = rigidBody->GetCollider();
+	collider->SetActive(true);
+	g_activeColliders.insert({ collider, aPlaneShape });
+}
+
+#pragma endregion
+
+void physics::ColliderSetLocalPosition(Collider* collider, math::Vector3 locelPosition)
+{
+	ASSERT(collider->IsActive());
+	PxShape* shape = g_activeColliders[collider];
+	ASSERT(shape);
+	PxTransform localPose = shape->getLocalPose();
+	localPose.p = GetPXVec(locelPosition);
+	shape->setLocalPose(localPose);
+}
+
+void physics::ColliderSetLocalRotation(Collider* collider, math::Quaternion localRotation)
+{
+	ASSERT(collider->IsActive());
+	PxShape* shape = g_activeColliders[collider];
+	ASSERT(shape);
+	PxTransform localPose = shape->getLocalPose();
+	localPose.q = GetPXQuat(localRotation);
+	shape->setLocalPose(localPose);
 }
 
 bool physics::Raycast(math::Vector3 origin, math::Vector3 direction, RaycastHit& result, float maxDistance, uint32_t layerMask)
