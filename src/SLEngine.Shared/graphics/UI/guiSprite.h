@@ -2,20 +2,21 @@
 
 #include "drawableElement.h"
 
-namespace graphics
-{
-	namespace UI
+namespace sle {
+	namespace graphics
 	{
-		class GuiSprite : public DrawableElement
+		namespace UI
 		{
-		public:
-			GuiSprite(DrawableElement* parent, float x, float y, float width, float height);
+			class GuiSprite : public DrawableElement
+			{
+			public:
+				SLE_EXPORTS GuiSprite(DrawableElement* parent, float x, float y, float width, float height);
+				SLE_EXPORTS void LoadBitmapFromFile(std::wstring filePath, bool setNativeSize = false);
+				SLE_EXPORTS virtual void Draw(void) override;
 
-			void LoadBitmapFromFile(std::wstring filePath, bool setNativeSize = false);
-			virtual void Draw(void) override;
-
-		private:
-			Microsoft::WRL::ComPtr<ID2D1Bitmap> m_bitmap;
-		};
+			private:
+				Microsoft::WRL::ComPtr<ID2D1Bitmap> m_bitmap;
+			};
+		}
 	}
 }

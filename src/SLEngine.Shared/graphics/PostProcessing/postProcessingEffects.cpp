@@ -4,20 +4,22 @@
 #include "FXAA.h"
 #include "Bloom.h"
 
-void graphics::PostEffects::Initialize()
+using namespace sle;
+
+void graphics::postEffects::Initialize()
 {
-	FXAA::Initialize();
+	fxaa::Initialize();
 	bloom::Initialize();
 }
 
-void graphics::PostEffects::Render()
+void graphics::postEffects::Render()
 {
-	if (graphics::FXAA::FXAAEnable)
+	if (graphics::fxaa::FXAAEnable)
 	{
 		if (graphics::bloom::Enable)
-			graphics::FXAA::Render(graphics::bloom::g_inputRenderTarget.GetAddressOf());
+			graphics::fxaa::Render(graphics::bloom::g_inputRenderTarget.GetAddressOf());
 		else
-			graphics::FXAA::Render(graphics::g_ScreenRenderTargetView.GetAddressOf());
+			graphics::fxaa::Render(graphics::g_ScreenRenderTargetView.GetAddressOf());
 	}
 
 	if (graphics::bloom::Enable)
@@ -26,22 +28,22 @@ void graphics::PostEffects::Render()
 	}
 }
 
-void graphics::PostEffects::Resize(UINT width, UINT height)
+void graphics::postEffects::Resize(UINT width, UINT height)
 {
-	graphics::FXAA::Resize(width, height);
+	graphics::fxaa::Resize(width, height);
 	graphics::bloom::Resize(width, height);
 }
 
-void graphics::PostEffects::Shutdown()
+void graphics::postEffects::Shutdown()
 {
-	FXAA::Shutdown();
+	fxaa::Shutdown();
 	bloom::Shutdown();
 }
 
-ID3D11RenderTargetView** graphics::PostEffects::GetInitialRenderTarget()
+ID3D11RenderTargetView** graphics::postEffects::GetInitialRenderTarget()
 {
-	if (FXAA::FXAAEnable)
-		return FXAA::g_pProxyTextureRTV.GetAddressOf();
+	if (fxaa::FXAAEnable)
+		return fxaa::g_pProxyTextureRTV.GetAddressOf();
 
 	if (bloom::Enable)
 		return bloom::g_inputRenderTarget.GetAddressOf();

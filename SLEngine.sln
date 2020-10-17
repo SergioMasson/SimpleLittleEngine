@@ -13,34 +13,54 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotHunter.Win32", "sample
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{830CB8B2-C1DC-42F1-B6DA-F4D3A47DB439}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLEngineSharp", "src\SLEngineSharp\SLEngineSharp.csproj", "{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\SLEngine.Shared\SLEngine.Shared.vcxitems*{08f447d4-2701-4866-aa2e-510bfb6bdb69}*SharedItemsImports = 9
 		src\SLEngine.Shared\SLEngine.Shared.vcxitems*{64aee204-f9e8-40ad-bcff-62a98719d04e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Debug|x64.ActiveCfg = Debug|x64
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Debug|x64.Build.0 = Debug|x64
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Debug|x86.ActiveCfg = Debug|Win32
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Debug|x86.Build.0 = Debug|Win32
+		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Release|Any CPU.ActiveCfg = Release|Win32
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Release|x64.ActiveCfg = Release|x64
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Release|x64.Build.0 = Release|x64
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Release|x86.ActiveCfg = Release|Win32
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E}.Release|x86.Build.0 = Release|Win32
+		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Debug|x64.ActiveCfg = Debug|x64
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Debug|x64.Build.0 = Debug|x64
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Debug|x86.ActiveCfg = Debug|Win32
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Debug|x86.Build.0 = Debug|Win32
+		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Release|Any CPU.ActiveCfg = Release|Win32
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Release|x64.ActiveCfg = Release|x64
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Release|x64.Build.0 = Release|x64
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Release|x86.ActiveCfg = Release|Win32
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A}.Release|x86.Build.0 = Release|Win32
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|x64.Build.0 = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Debug|x86.Build.0 = Debug|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|x64.ActiveCfg = Release|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|x64.Build.0 = Release|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|x86.ActiveCfg = Release|Any CPU
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +69,7 @@ Global
 		{64AEE204-F9E8-40AD-BCFF-62A98719D04E} = {6F838F49-A26A-4377-A148-52A4CCD07D59}
 		{08F447D4-2701-4866-AA2E-510BFB6BDB69} = {6F838F49-A26A-4377-A148-52A4CCD07D59}
 		{8585AFA2-3559-4577-AAE7-644C85C87C9A} = {830CB8B2-C1DC-42F1-B6DA-F4D3A47DB439}
+		{4639A6A8-5FA7-4A3F-8686-8DE6DF27B198} = {6F838F49-A26A-4377-A148-52A4CCD07D59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E14DB6D-6C04-4EC6-BFED-40FA54AF2E87}

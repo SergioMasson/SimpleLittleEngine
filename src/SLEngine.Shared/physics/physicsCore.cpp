@@ -3,11 +3,26 @@
 #include <thread>
 #include "../dxassert.h"
 #include "physicsCore.h"
+
+//Nvidia physx
+#pragma comment(lib, "PhysX_64.lib")
+#pragma comment(lib, "PhysXCommon_64.lib")
+#pragma comment(lib, "PhysXFoundation_64.lib")
+#pragma comment(lib, "SceneQuery_static_64.lib")
+#pragma comment(lib, "LowLevel_static_64.lib")
+#pragma comment(lib, "LowLevelAABB_static_64.lib")
+#pragma comment(lib, "LowLevelDynamics_static_64.lib")
+#pragma comment(lib, "PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "PhysXCooking_64.lib")
+#pragma comment(lib, "PhysXExtensions_static_64.lib")
+#pragma comment(lib, "PhysXPvdSDK_static_64.lib")
+
 #include "physx/PxPhysicsAPI.h"
 #include "rigidBody.h"
 #include "collider.h"
 
 using namespace physx;
+using namespace sle;
 
 static PxDefaultErrorCallback gDefaultErrorCallback;
 static PxDefaultAllocator gDefaultAllocatorCallback;
@@ -43,11 +58,11 @@ class SimulationEventCallbacks : public PxSimulationEventCallback
 		auto rigidBody1 = reinterpret_cast<physics::RigidBody*>(actor1->userData);
 		auto rigidBody2 = reinterpret_cast<physics::RigidBody*>(actor2->userData);
 
-		auto GO1 = rigidBody1->GetGameObject();
-		auto GO2 = rigidBody2->GetGameObject();
+		GameObject& GO1 = rigidBody1->GetGameObject();
+		GameObject& GO2 = rigidBody2->GetGameObject();
 
-		GO1->NotifyCollision(rigidBody2);
-		GO2->NotifyCollision(rigidBody1);
+		GO1.NotifyCollision(rigidBody2);
+		GO2.NotifyCollision(rigidBody1);
 	};
 
 	void onTrigger(PxTriggerPair* pairs, PxU32 count) override {};
@@ -218,14 +233,14 @@ void physics::Update(float deltaT)
 	for (auto keyValuePair : g_activeRigidBodies)
 	{
 		PxRigidActor* pxRigidBody = keyValuePair.second;
-		GameObject* go = keyValuePair.first->GetGameObject();
+		GameObject& go = keyValuePair.first->GetGameObject();
 
 		PxTransform transform = pxRigidBody->getGlobalPose();
 		PxVec3 position = transform.p;
 		PxQuat rotation = transform.q;
 
-		go->SetPosition(math::Vector3(position.x, position.y, position.z));
-		go->SetRotation(math::Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+		go.SetPosition(math::Vector3(position.x, position.y, position.z));
+		go.SetRotation(math::Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
 	}
 }
 
@@ -461,7 +476,7 @@ void physics::CreateCapsuleCollider(RigidBody* rigidBody, float radius, float ha
 
 	PxTransform transform = actor->getGlobalPose();
 	aCapsuleShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-	aCapsuleShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+	//aCapsuleShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 
 	auto collider = rigidBody->GetCollider();
 	collider->SetActive(true);
@@ -471,14 +486,14 @@ void physics::CreateCapsuleCollider(RigidBody* rigidBody, float radius, float ha
 void physics::RigidBodyCreateBoxCollider(RigidBody* rigidBody, float width, float height, float depth, math::Vector3 relativePositon)
 {
 	PxRigidActor* actor = g_activeRigidBodies[rigidBody];
-	PxMaterial* aMaterial = g_Physics->createMaterial(0.1, 0.99f, 0);
+	PxMaterial* aMaterial = g_Physics->createMaterial(0.1f, 0.99f, 0.0f);
 	PxBoxGeometry geometry(width / 2.0f, height / 2.0f, depth / 2.0f);
 	PxShape* aBoxShape = PxRigidActorExt::createExclusiveShape(*actor, geometry, *aMaterial);
 
 	PxTransform relativePose(GetPXVec(relativePositon), PxQuat(PxHalfPi, PxVec3(0, 0, 1)));
 	aBoxShape->setLocalPose(relativePose);
 	aBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-	aBoxShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+	//aBoxShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 
 	auto collider = rigidBody->GetCollider();
 	collider->SetActive(true);

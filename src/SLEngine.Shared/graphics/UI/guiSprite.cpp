@@ -3,6 +3,7 @@
 #include "../coreGraphics.h"
 
 using namespace Microsoft::WRL;
+using namespace sle;
 
 graphics::UI::GuiSprite::GuiSprite(DrawableElement* parent, float x, float y, float width, float height) : DrawableElement{ parent, x, y, width, height }
 {

@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "lights.h"
 
-std::set<LightComponent*> g_activeLights;
+using namespace sle;
 
-LightComponent::LightComponent(GameObject* gameObject, Color color,
+std::set<LightComponent*> sle::g_activeLights;
+
+LightComponent::LightComponent(GameObject& gameObject, Color color,
 	LightType type,
 	float intensity,
 	float range,
@@ -25,8 +27,8 @@ LightComponent::~LightComponent()
 
 LightData LightComponent::GetData()
 {
-	DirectX::XMFLOAT3 position = m_gameObject->GetPosition();
-	DirectX::XMFLOAT3 direction = -math::Matrix3{ m_gameObject->GetRotation() }.GetZ();
+	DirectX::XMFLOAT3 position = m_gameObject.GetPosition();
+	DirectX::XMFLOAT3 direction = -math::Matrix3{ m_gameObject.GetRotation() }.GetZ();
 
 	switch (m_type)
 	{

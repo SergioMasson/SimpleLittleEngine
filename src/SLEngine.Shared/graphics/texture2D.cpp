@@ -3,10 +3,10 @@
 #include <fstream>
 #include <iterator>
 #include <vector>
-
 #include "texture2D.h"
-
 #include "dds.h"
+
+using namespace sle;
 
 graphics::Texture2D::Texture2D(const wchar_t* filePath)
 {

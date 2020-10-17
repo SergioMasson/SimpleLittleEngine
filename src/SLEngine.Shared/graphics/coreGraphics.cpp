@@ -7,7 +7,8 @@
 #include "PostProcessing/PostProcessingEffects.h"
 
 using namespace Microsoft::WRL;
-using namespace graphics;
+using namespace sle;
+using namespace sle::graphics;
 
 UINT							graphics::g_4xMsaaQuality;
 LONG							graphics::g_windowWidth;
@@ -188,8 +189,8 @@ void graphics::Initialize(uint32_t width, uint32_t heigth)
 {
 	InitializeGraphicsInfra(width, heigth);
 
-	graphics::PostEffects::Initialize();
-	graphics::PostEffects::Resize(g_windowWidth, g_windowHeight);
+	graphics::postEffects::Initialize();
+	graphics::postEffects::Resize(g_windowWidth, g_windowHeight);
 }
 
 void graphics::Resize(uint32_t width, uint32_t heigth)
@@ -230,14 +231,14 @@ void graphics::Resize(uint32_t width, uint32_t heigth)
 	createD3DRenderTarget(backBuffer);
 	createD2DRenderTarget(backBuffer.Get());
 
-	graphics::PostEffects::Resize(width, heigth);
+	graphics::postEffects::Resize(width, heigth);
 }
 
 void graphics::BeginDraw()
 {
 	g_d3dImmediateContext->ClearRenderTargetView(g_ScreenRenderTargetView.Get(), reinterpret_cast<const float*>(&m_cleanColor));
 	g_d3dImmediateContext->ClearDepthStencilView(g_ScreenDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	g_d3dImmediateContext->OMSetRenderTargets(1, graphics::PostEffects::GetInitialRenderTarget(), g_ScreenDepthStencilView.Get());
+	g_d3dImmediateContext->OMSetRenderTargets(1, graphics::postEffects::GetInitialRenderTarget(), g_ScreenDepthStencilView.Get());
 }
 
 void graphics::Present()
@@ -247,5 +248,5 @@ void graphics::Present()
 
 void graphics::ShutDown()
 {
-	graphics::PostEffects::Shutdown();
+	graphics::postEffects::Shutdown();
 }

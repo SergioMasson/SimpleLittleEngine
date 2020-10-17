@@ -14,7 +14,7 @@
 #include "pch.h"
 #include "random.h"
 
-namespace math
+namespace sle::math
 {
 	RandomNumberGenerator g_RNG;
 }

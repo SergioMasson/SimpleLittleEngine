@@ -3,7 +3,13 @@
 #include "guiText.h"
 #include "../coreGraphics.h"
 
+using namespace sle;
+
 static const WCHAR msc_fontName[] = L"Verdana";
+
+sle::graphics::UI::GuiText::GuiText()
+{
+}
 
 graphics::UI::GuiText::GuiText(DrawableElement* parent, float x, float y, float width, float height, float fontSize) : DrawableElement{ parent, x, y, width, height }, m_color{ D2D1::ColorF::Black }
 {

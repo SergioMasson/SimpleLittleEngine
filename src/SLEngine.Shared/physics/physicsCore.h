@@ -2,48 +2,52 @@
 
 #include "../mathHelpers.h"
 
-namespace physics
+namespace sle
 {
-	class RigidBody;
-	class Collider;
-
-	struct RaycastHit
+	namespace physics
 	{
-		math::Vector3 Position;
-		math::Vector3 Normal;
-		RigidBody* RigibBodyHit;
-	};
+		class RigidBody;
+		class Collider;
 
-	void Initialize();
-	void Shutdown();
-	void Update(float deltaT);
+		struct RaycastHit
+		{
+			math::Vector3 Position;
+			math::Vector3 Normal;
+			RigidBody* RigibBodyHit;
+		};
 
-	void CreateRigidBody(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation, float initalMass, bool isKinematic = false, bool isStatic = false);
-	void RigidBodySetMass(RigidBody* rigidBody, float mass);
-	math::Vector3 RigidBodyGetVelocity(RigidBody* rigidBody);
-	void RigidBodySetVelocity(RigidBody* rigidBody, math::Vector3 velocity);
-	void RigidBodyAddVelocity(RigidBody* rigidBody, math::Vector3 velocity);
-	void RigidBodyAddVelocity(RigidBody* rigidBody, math::Vector3 velocity, float maxModule);
-	void RigidBodyAddForce(RigidBody* rigidBody, math::Vector3 force);
-	void RigidBodyAddTorque(RigidBody* rigidBody, math::Vector3 torque);
-	void RigidBodySetKinematic(RigidBody* rigidBody, bool isKinematic);
-	void RigidBodySetCollisionMask(RigidBody* rigidBody, uint32_t mask, uint32_t filter);
-	void RigidBodySetPosition(RigidBody* rigidBody, math::Vector3 position);
-	void RigidBodySetRotation(RigidBody* rigidBody, math::Quaternion rotation);
-	bool RigidBodyCheckCollisionWith(RigidBody* rigidBody, uint32_t collisionLayer);
+		SLE_EXPORTS void Initialize();
+		SLE_EXPORTS void Shutdown();
+		SLE_EXPORTS void Update(float deltaT);
 
-	bool RigidBodyIsOverlaping(RigidBody* rigidBody1, RigidBody* rigidBody2);
+		SLE_EXPORTS void CreateRigidBody(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation, float initalMass, bool isKinematic = false, bool isStatic = false);
+		SLE_EXPORTS void RigidBodySetMass(RigidBody* rigidBody, float mass);
+		SLE_EXPORTS math::Vector3 RigidBodyGetVelocity(RigidBody* rigidBody);
+		SLE_EXPORTS void RigidBodySetVelocity(RigidBody* rigidBody, math::Vector3 velocity);
+		SLE_EXPORTS void RigidBodyAddVelocity(RigidBody* rigidBody, math::Vector3 velocity);
+		SLE_EXPORTS void RigidBodyAddVelocity(RigidBody* rigidBody, math::Vector3 velocity, float maxModule);
+		SLE_EXPORTS void RigidBodyAddVelocity(RigidBody* rigidBody, math::Vector3 velocity, float maxModule);
+		SLE_EXPORTS void RigidBodyAddForce(RigidBody* rigidBody, math::Vector3 force);
+		SLE_EXPORTS void RigidBodyAddTorque(RigidBody* rigidBody, math::Vector3 torque);
+		SLE_EXPORTS void RigidBodySetKinematic(RigidBody* rigidBody, bool isKinematic);
+		SLE_EXPORTS void RigidBodySetCollisionMask(RigidBody* rigidBody, uint32_t mask, uint32_t filter);
+		SLE_EXPORTS void RigidBodySetPosition(RigidBody* rigidBody, math::Vector3 position);
+		SLE_EXPORTS void RigidBodySetRotation(RigidBody* rigidBody, math::Quaternion rotation);
+		SLE_EXPORTS bool RigidBodyCheckCollisionWith(RigidBody* rigidBody, uint32_t collisionLayer);
 
-	//Colliders geometry.
-	void CreateCapsuleCollider(RigidBody* rigidBody, float radius, float halfHeight);
-	void RigidBodyCreateBoxCollider(RigidBody* rigidBody, float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
-	void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation);
-	void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, float x, float y, float z, float w);
-	void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, float distance);
-	void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Vector3 normal);
+		SLE_EXPORTS bool RigidBodyIsOverlaping(RigidBody* rigidBody1, RigidBody* rigidBody2);
 
-	void ColliderSetLocalPosition(Collider* collider, math::Vector3 localPosition);
-	void ColliderSetLocalRotation(Collider* collider, math::Quaternion localRotation);
+		//Colliders geometry.
+		SLE_EXPORTS void CreateCapsuleCollider(RigidBody* rigidBody, float radius, float halfHeight);
+		SLE_EXPORTS void RigidBodyCreateBoxCollider(RigidBody* rigidBody, float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
+		SLE_EXPORTS void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Quaternion rotation);
+		SLE_EXPORTS void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, float x, float y, float z, float w);
+		SLE_EXPORTS void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, float distance);
+		SLE_EXPORTS void RigidBodyCreatePlaneCollider(RigidBody* rigidBody, math::Vector3 position, math::Vector3 normal);
 
-	bool Raycast(math::Vector3 origin, math::Vector3 direction, RaycastHit& result, float maxDistance, uint32_t layerMask);
+		SLE_EXPORTS void ColliderSetLocalPosition(Collider* collider, math::Vector3 localPosition);
+		SLE_EXPORTS void ColliderSetLocalRotation(Collider* collider, math::Quaternion localRotation);
+
+		SLE_EXPORTS bool Raycast(math::Vector3 origin, math::Vector3 direction, RaycastHit& result, float maxDistance, uint32_t layerMask);
+	}
 }

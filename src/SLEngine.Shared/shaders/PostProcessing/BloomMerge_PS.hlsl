@@ -21,7 +21,7 @@ static const float gamma = 2.2;
 float4 main(BloomVS_Output Input) : SV_TARGET
 {
     float3 hdrColor = SceneTexture.Sample(InputSampler, Input.Tex).rgb;
-    hdrColor = pow(hdrColor, gamma);
+    hdrColor = pow(abs(hdrColor), gamma);
     
     float3 bloomColor = BlurTexture.Sample(InputSampler, Input.Tex).rgb;
     hdrColor += bloomColor; // additive blending
@@ -30,6 +30,6 @@ float4 main(BloomVS_Output Input) : SV_TARGET
     float3 result = float3(1.0, 1.0, 1.0) - exp(-hdrColor * exposure);
     
     // also gamma correct while we're at it       
-    result = pow(result, 1.0 / gamma);
+    result = pow(abs(result), 1.0 / gamma);
     return float4(result, 1.0f);
 }

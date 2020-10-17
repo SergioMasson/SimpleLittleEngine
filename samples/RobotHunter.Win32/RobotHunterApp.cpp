@@ -24,6 +24,8 @@
 #define WORLD_X  100.0f
 #define WORLD_Y  100.0f
 
+using namespace sle;
+
 graphics::MeshData quad;
 graphics::MeshData playerCharacter;
 graphics::MeshData enemyMesh;
@@ -59,7 +61,7 @@ void RobotHunterApp::Startup(void)
 	CreateGUI();
 	CreateCamera();
 
-	m_player->AddComponent<PlayerControllerPhysics>(math::Vector3(0, 1, 0));
+	m_player.AddComponent<PlayerControllerPhysics>(math::Vector3(0, 1, 0));
 	audio::PlayAudioFile(L"audioFiles/test.wav", true);
 }
 
@@ -78,14 +80,14 @@ void RobotHunterApp::Update(float deltaT, float totalTime)
 		graphics::bloom::Enable = false;
 
 	if (Input::IsPressed(KeyCode::Key_f))
-		graphics::FXAA::FXAAEnable = true;
+		graphics::fxaa::FXAAEnable = true;
 	else if (Input::IsPressed(KeyCode::Key_g))
-		graphics::FXAA::FXAAEnable = false;
+		graphics::fxaa::FXAAEnable = false;
 
 	if (Input::IsPressed(KeyCode::Key_add))
-		graphics::bloom::Exposure += 0.1;
+		graphics::bloom::Exposure += 0.1f;
 	else if (Input::IsPressed(KeyCode::Key_minus))
-		graphics::bloom::Exposure -= 0.1;
+		graphics::bloom::Exposure -= 0.1f;
 
 	if (m_firstFrame)
 	{
@@ -95,7 +97,7 @@ void RobotHunterApp::Update(float deltaT, float totalTime)
 
 	m_isDone = Input::IsPressed(KeyCode::Key_escape) || (Input::IsPressed(KeyCode::Key_return) && enemiesLeft == 0);
 
-	auto oldPlayerPosition = m_player->GetPosition();
+	auto oldPlayerPosition = m_player.GetPosition();
 
 	for (auto behaviours : g_activeBehaviours)
 		behaviours->Update(deltaT);
@@ -106,8 +108,8 @@ void RobotHunterApp::Update(float deltaT, float totalTime)
 		m_time += deltaT;
 	else
 	{
-		m_trophy->SetRotation(m_trophy->GetLocalRotation() * math::Quaternion(math::Vector3(0, 1, 0), deltaT * 2));
-		m_trophy->SetPosition(m_trophy->GetLocalPosition() + math::Vector3(0.0f, 0.8f * sin(1.5f * totalTime) * 0.005f, 0));
+		m_trophy.SetRotation(m_trophy.GetLocalRotation() * math::Quaternion(math::Vector3(0, 1, 0), deltaT * 2));
+		m_trophy.SetPosition(m_trophy.GetLocalPosition() + math::Vector3(0.0f, 0.8f * sin(1.5f * totalTime) * 0.005f, 0));
 	}
 
 	m_counterText->SetText(L"TOTAL TIME: " + std::to_wstring(m_time));
@@ -169,18 +171,16 @@ void RobotHunterApp::CreateCamera()
 
 void RobotHunterApp::CreateLights()
 {
-	m_scenePointLight = new GameObject();
-	auto lightComponent = m_scenePointLight->AddComponent<LightComponent>(Color::Aqua, LightType::Point, 2.0f, 7);
+	auto lightComponent = m_scenePointLight.AddComponent<LightComponent>(Color::Aqua, LightType::Point, 2.0f, 7);
 
-	m_scenePointLight->SetParent(m_player);
-	m_scenePointLight->SetPosition(math::Vector3{ 0, 1.5f, 1.5f });
+	m_scenePointLight.SetParent(&m_player);
+	m_scenePointLight.SetPosition(math::Vector3{ 0, 1.5f, 1.5f });
 
-	m_sceneSpotLight = new GameObject();
-	m_sceneSpotLight->SetPosition(math::Vector3{ 0, 5.5f, -1.0f });
-	lightComponent = m_sceneSpotLight->AddComponent<LightComponent>(Color::White, LightType::Point, 0.15f, 15.0f, 96.0f);
+	m_sceneSpotLight.SetPosition(math::Vector3{ 0, 5.5f, -1.0f });
+	lightComponent = m_sceneSpotLight.AddComponent<LightComponent>(Color::White, LightType::Point, 0.005f, 15.0f, 96.0f);
 	// Spot light--position and direction changed every frame to animate in UpdateScene function.
 
-	m_sceneSpotLight->SetParent(m_player);
+	m_sceneSpotLight.SetParent(&m_player);
 }
 
 void RobotHunterApp::CreateObjects()
@@ -192,27 +192,26 @@ void RobotHunterApp::CreateObjects()
 	graphics::MeshData::CreateCylinder(1, 1, 10, 20, 20, pilarMesh);
 
 	//TODO(Sergio): Load this on a separate thread. Asset loading will take a time...
-	auto normalMap = new graphics::Texture2D(L"textures/neutralNormal.dds");
-	auto playerTexture = new graphics::Texture2D(L"textures/littleRobot.dds");
-	auto floorTexture = new graphics::Texture2D(L"textures/checkboard_mips.dds");
-	auto floorNormalMap = new graphics::Texture2D(L"textures/tile_nmap.dds");
-	auto enemyTexture = new graphics::Texture2D(L"textures/enemy.dds");
-	auto enemyDetectedTexture = new graphics::Texture2D(L"textures/enemy_inv.dds");
-	auto pilarTexture = new graphics::Texture2D(L"textures/checkboard_mips.dds");
-	auto pilarNormal = new graphics::Texture2D(L"textures/tile_nmap.dds");
-
-	auto defaultEmissionMap = new graphics::Texture2D(L"textures/defaultEmissionMap.dds");
-	auto playerEmissionMap = new graphics::Texture2D(L"textures/newEmissionMap.dds");
+	graphics::Texture2D normalMap = graphics::Texture2D(L"textures/neutralNormal.dds");
+	graphics::Texture2D playerTexture = graphics::Texture2D(L"textures/littleRobot.dds");
+	graphics::Texture2D floorTexture = graphics::Texture2D(L"textures/checkboard_mips.dds");
+	graphics::Texture2D floorNormalMap = graphics::Texture2D(L"textures/tile_nmap.dds");
+	graphics::Texture2D enemyTexture = graphics::Texture2D(L"textures/enemy.dds");
+	graphics::Texture2D enemyDetectedTexture = graphics::Texture2D(L"textures/enemy_inv.dds");
+	graphics::Texture2D pilarTexture = graphics::Texture2D(L"textures/checkboard_mips.dds");
+	graphics::Texture2D pilarNormal = graphics::Texture2D(L"textures/tile_nmap.dds");
+	graphics::Texture2D defaultEmissionMap = graphics::Texture2D(L"textures/defaultEmissionMap.dds");
+	graphics::Texture2D playerEmissionMap = graphics::Texture2D(L"textures/newEmissionMap.dds");
 
 	graphics::Material playerMaterial{};
 	playerMaterial.Metalness = 0.2f;
 	playerMaterial.Roughness = 0.2f;
 	playerMaterial.Color = Color::White;
 
-	m_player = new GameObject(math::Vector3(0, 1, 0));
-	m_player->SetName(L"Player");
-	auto playerRenderer = m_player->AddMeshRenderer(&playerCharacter, playerMaterial);
-	auto playerRigidBody = m_player->AddComponent<physics::RigidBody>(10.0f, false);
+	m_player.SetPosition(math::Vector3(0, 1, 0));
+	m_player.SetName(L"Player");
+	auto playerRenderer = m_player.AddMeshRenderer(&playerCharacter, playerMaterial);
+	auto playerRigidBody = m_player.AddComponent<physics::RigidBody>(10.0f, false);
 	playerRigidBody->AddBoxCollider(2, 1, 1, math::Vector3(0, 1.0f, 0));
 	playerRigidBody->IsKinematic(false);
 	playerRigidBody->SetCollisionFilters(FilterGroup::Enum::ePLAYER, FilterGroup::Enum::eENEMY);
@@ -226,13 +225,12 @@ void RobotHunterApp::CreateObjects()
 	trophyMaterial.Roughness = 0.7f;
 	trophyMaterial.Color = Color::White;
 
-	m_trophy = new GameObject();
-	m_trophy->SetName(L"Trophy");
-	m_trophy->SetParent(m_player);
-	m_trophy->SetPosition(math::Vector3(0, 1.2f, 0));
-	m_trophy->SetScale(math::Vector3(0.5f, 0.5f, 0.5f));
+	m_trophy.SetName(L"Trophy");
+	m_trophy.SetParent(&m_player);
+	m_trophy.SetPosition(math::Vector3(0, 1.2f, 0));
+	m_trophy.SetScale(math::Vector3(0.5f, 0.5f, 0.5f));
 
-	auto trophyRenderer = m_trophy->AddMeshRenderer(&trophyMesh, trophyMaterial);
+	auto trophyRenderer = m_trophy.AddMeshRenderer(&trophyMesh, trophyMaterial);
 	trophyRenderer->SetAlbedoTexture(playerTexture);
 	trophyRenderer->SetNormalMap(normalMap);
 	trophyRenderer->SetNormalMap(normalMap);
@@ -246,15 +244,14 @@ void RobotHunterApp::CreateObjects()
 	floorMaterial.Metalness = 0.3f;
 	floorMaterial.Roughness = 0.1f;
 
-	m_floor = new GameObject();
-	m_floor->SetName(L"Floor");
-	auto floorRenderer = m_floor->AddMeshRenderer(&quad, floorMaterial);
+	m_floor.SetName(L"Floor");
+	auto floorRenderer = m_floor.AddMeshRenderer(&quad, floorMaterial);
 	floorRenderer->SetAlbedoTexture(floorTexture);
 	floorRenderer->SetNormalMap(floorNormalMap);
 	floorRenderer->SetEmissionMap(defaultEmissionMap);
 	floorRenderer->SetTextureScale(20, 20);
 
-	auto floorRigidBodyComponent = m_floor->AddComponent<physics::RigidBody>(10, true);
+	auto floorRigidBodyComponent = m_floor.AddComponent<physics::RigidBody>(10, true);
 	floorRigidBodyComponent->AddPlaneCollider(math::Vector3(0, 0, 0), math::Vector3(0, 1, 0));
 	//floorRigidBodyComponent->SetCollisionFilters(FilterGroup::Enum::eFLOOR, FilterGroup::Enum::ePLAYER);
 
@@ -278,7 +275,7 @@ void RobotHunterApp::CreateObjects()
 	m_sceneMeshRenderer.push_back(floorRenderer);
 }
 
-void RobotHunterApp::CreateEnemy(graphics::MeshData* enemyData, graphics::Texture2D* enemyTexture, graphics::Texture2D* enemyNormal, graphics::Texture2D* detectedTexture, graphics::Texture2D* emissionMap)
+void RobotHunterApp::CreateEnemy(graphics::MeshData* enemyData, graphics::Texture2D& enemyTexture, graphics::Texture2D& enemyNormal, graphics::Texture2D& detectedTexture, graphics::Texture2D& emissionMap)
 {
 	graphics::Material material1{};
 	material1.Color = Color::White;
@@ -309,11 +306,12 @@ void RobotHunterApp::CreateEnemy(graphics::MeshData* enemyData, graphics::Textur
 		enemyRenderer->SetEmissionMap(emissionMap);
 		m_sceneMeshRenderer.push_back(enemyRenderer);
 		enemyGO->AddComponent<Enemy>(detectedTexture);
-		m_enemiesLeft.push_back(enemyGO);
+
+		m_enemiesLeft.push_back(std::move(enemyGO));
 	}
 }
 
-void RobotHunterApp::CreatePilars(graphics::MeshData* pilarData, graphics::Texture2D* pilarTexture, graphics::Texture2D* pilarNormal, graphics::Texture2D* emissionMap)
+void RobotHunterApp::CreatePilars(graphics::MeshData* pilarData, graphics::Texture2D& pilarTexture, graphics::Texture2D& pilarNormal, graphics::Texture2D& emissionMap)
 {
 	graphics::Material material1{};
 	material1.Color = Color::White;
@@ -350,9 +348,9 @@ void RobotHunterApp::CreatePilars(graphics::MeshData* pilarData, graphics::Textu
 			pilar->SetPosition(math::Vector3(pilarX, 5, pilarY));
 			auto pilarBound = pilarRenderer->WBoudingBox();
 
-			overlapingEnemy = pilarBound.IsOverlaping(m_player->GetMeshRenderer()->WBoudingBox());
+			overlapingEnemy = pilarBound.IsOverlaping(m_player.GetMeshRenderer()->WBoudingBox());
 
-			for (auto enemy : m_enemiesLeft)
+			for (GameObject* enemy : m_enemiesLeft)
 				overlapingEnemy = overlapingEnemy || enemy->GetMeshRenderer()->WBoudingBox().IsOverlaping(pilarBound);
 
 			for (auto otherPilar : m_pilars)
@@ -405,7 +403,7 @@ void RobotHunterApp::CheckForEnemyCollision()
 {
 	auto it = m_enemiesLeft.begin();
 
-	auto playerRigidBody = m_player->GetComponent<physics::RigidBody>();
+	auto playerRigidBody = m_player.GetComponent<physics::RigidBody>();
 
 	while (it != m_enemiesLeft.end())
 	{
@@ -434,7 +432,7 @@ void RobotHunterApp::CheckForEnemyCollision()
 
 				m_sceneGuiElements.push_back(congratulationsSprite);
 
-				auto meshRenderer = m_trophy->GetMeshRenderer();
+				auto meshRenderer = m_trophy.GetMeshRenderer();
 				m_sceneMeshRenderer.push_back(meshRenderer);
 
 				auto pressEnterText = new graphics::UI::GuiText(nullptr, 0.0f, 0.0f, static_cast<float>(graphics::g_windowWidth), -200.0f, 40.0f);
@@ -454,7 +452,7 @@ void RobotHunterApp::CheckForEnemyCollision()
 
 bool RobotHunterApp::CheckIfInsideScene()
 {
-	return m_floor->GetMeshRenderer()->WBoudingBox().IsPointInside(m_player->GetPosition());
+	return m_floor.GetMeshRenderer()->WBoudingBox().IsPointInside(m_player.GetPosition());
 }
 
 void RobotHunterApp::Cleanup(void)

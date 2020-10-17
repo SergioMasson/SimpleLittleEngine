@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "colors.h"
 
+using namespace sle;
+
 const Color Color::AliceBlue = 0xF0F8FF;
 const Color Color::AntiqueWhite = 0xFAEBD7;
 const Color Color::Aqua = 0x00FFFF;

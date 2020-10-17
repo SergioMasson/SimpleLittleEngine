@@ -2,10 +2,12 @@
 #include "gameObject.h"
 #include "graphics/meshRenderer.h"
 
-std::set<BehaviourComponent*> g_activeBehaviours;
-std::set<GameObject*> g_activeGameObjects;
+using namespace sle;
 
-GameObject::GameObject(math::Vector3 position, math::Quaternion rotation, GameObject* parent, std::wstring name) :
+std::set<BehaviourComponent*> sle::g_activeBehaviours;
+std::set<sle::GameObject*> sle::g_activeGameObjects;
+
+sle::GameObject::GameObject(math::Vector3 position, math::Quaternion rotation, GameObject* parent, std::wstring name) :
 	m_transform{ rotation, position },
 	m_meshRenderer{ nullptr },
 	m_parent{ parent },
@@ -15,7 +17,7 @@ GameObject::GameObject(math::Vector3 position, math::Quaternion rotation, GameOb
 	g_activeGameObjects.insert(this);
 }
 
-GameObject::~GameObject()
+sle::GameObject::~GameObject()
 {
 	for (Component* component : m_components)
 		delete component;
@@ -26,12 +28,12 @@ GameObject::~GameObject()
 	g_activeGameObjects.erase(this);
 }
 
-math::Vector3 GameObject::GetLocalPosition() const
+math::Vector3 sle::GameObject::GetLocalPosition() const
 {
 	return m_transform.GetTranslation();
 }
 
-math::Vector3 GameObject::GetPosition() const
+math::Vector3 sle::GameObject::GetPosition() const
 {
 	if (m_parent != nullptr)
 		return m_parent->GetTransform() * m_transform.GetTranslation();
@@ -39,7 +41,7 @@ math::Vector3 GameObject::GetPosition() const
 	return m_transform.GetTranslation();
 }
 
-math::Quaternion GameObject::GetLocalRotation() const
+math::Quaternion sle::GameObject::GetLocalRotation() const
 {
 	return m_transform.GetRotation();
 }
@@ -85,7 +87,7 @@ void GameObject::NotifyCollision(physics::RigidBody* other)
 
 graphics::MeshRenderer* GameObject::AddMeshRenderer(graphics::MeshData* data, graphics::Material material)
 {
-	m_meshRenderer = new graphics::MeshRenderer(this, data, material);
+	m_meshRenderer = new graphics::MeshRenderer(*this, data, material);
 	return m_meshRenderer;
 }
 

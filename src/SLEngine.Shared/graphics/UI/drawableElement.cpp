@@ -2,6 +2,8 @@
 #include "drawableElement.h"
 #include "../coreGraphics.h"
 
+using namespace sle;
+
 void graphics::UI::DrawableElement::GetScreenPoition(float& x, float& y)
 {
 	float parentX = 0;

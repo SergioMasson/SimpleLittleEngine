@@ -2,26 +2,28 @@
 
 #include "texture2D.h"
 
-namespace graphics
-{
-	class RenderPipeline;
-
-	class Material
+namespace sle {
+	namespace graphics
 	{
-	public:
-		Material()
+		class RenderPipeline;
+
+		class Material
 		{
-			ZeroMemory(this, sizeof(this));
-			Emission = { 0.0f, 0.0f, 0.0f, 0.0f };
-		}
+		public:
+			Material()
+			{
+				ZeroMemory(this, sizeof(this));
+				Emission = { 0.0f, 0.0f, 0.0f, 0.0f };
+			}
 
-		DirectX::XMFLOAT4 Color;
-		DirectX::XMFLOAT4 Emission;
+			DirectX::XMFLOAT4 Color;
+			DirectX::XMFLOAT4 Emission;
 
-		float Metalness;
-		float Roughness;
-		DirectX::XMFLOAT2 Pad;
+			float Metalness;
+			float Roughness;
+			DirectX::XMFLOAT2 Pad;
 
-		friend RenderPipeline;
-	};
+			friend RenderPipeline;
+		};
+	}
 }

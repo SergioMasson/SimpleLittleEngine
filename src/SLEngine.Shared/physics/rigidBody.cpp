@@ -2,12 +2,14 @@
 #include "rigidBody.h"
 #include "physicsCore.h"
 
-physics::RigidBody::RigidBody(GameObject* gameObject, float mass, bool isStatic) :
+using namespace sle;
+
+physics::RigidBody::RigidBody(GameObject& gameObject, float mass, bool isStatic) :
 	Component(gameObject),
 	m_mass{ mass },
 	m_isStatic{ isStatic }
 {
-	physics::CreateRigidBody(this, gameObject->GetPosition(), gameObject->GetRotation(), mass, isStatic);
+	physics::CreateRigidBody(this, gameObject.GetPosition(), gameObject.GetRotation(), mass, isStatic);
 }
 
 void physics::RigidBody::AddBoxCollider(float width, float height, float depth, math::Vector3 relativePosition)

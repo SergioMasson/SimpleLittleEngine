@@ -16,7 +16,7 @@ float4 main(BloomVS_Output Input) : SV_TARGET
 {
     float3 luma = float3(1, 1, 1);
     float3 albedo = InputTexture.Sample(InputSampler, Input.Tex).xyz;
-    albedo = pow(albedo, 2.2f);
+    albedo = pow(abs(albedo), 2.2f);
     
     float gray = dot(albedo, luma);
     

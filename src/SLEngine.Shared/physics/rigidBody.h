@@ -3,71 +3,74 @@
 #include "../gameObject.h"
 #include "collider.h"
 
-namespace physics
+namespace sle
 {
-	class Collider;
-
-	/**
-	\brief Rigid body component for physics interaction.
-	This components allows for components to participate on physics.
-	*/
-	class RigidBody : public Component
+	namespace physics
 	{
-	public:
-
-		void AddBoxCollider(float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
-		void AddCapsuleCollider(float radius, float halfHeight);
-		void AddPlaneCollider(math::Vector3 position, math::Quaternion rotation);
-		void AddPlaneCollider(math::Vector3 position, float distance);
-		void AddPlaneCollider(math::Vector3 position, math::Vector3 normal);
-		void SetCollisionFilters(uint32_t mask, uint32_t filter);
-
-		math::Vector3 GetVelocity();
-
-		void SetVelocity(math::Vector3 velocity);
-		void AddVelocity(math::Vector3 velocity, float maxV = 0.0f);
-		void AddForce(math::Vector3 force);
-		void AddTorque(math::Vector3 torque);
-		void SetPosition(math::Vector3 position);
-		void SetRotation(math::Quaternion rotation);
-		void MovePosition(math::Vector3 position);
-		void MoveRotation(math::Quaternion rotation);
-
-		bool CheckCollisionWith(uint32_t collisionLayer);
-		bool IsOverlaping(RigidBody* other);
-
-		Collider* GetCollider() { return &m_collider; };
+		class Collider;
 
 		/**
-		\brief Set Kinematic behaviur.
-		Kinematic objects are not affected by forces and acceleration. Allow to controll object by MovePosition and MoveRotation.
+		\brief Rigid body component for physics interaction.
+		This components allows for components to participate on physics.
 		*/
-		void IsKinematic(bool isKinematic);
+		class RigidBody : public Component
+		{
+		public:
 
-		/**
-		\brief Get Kinematic state of the object.
-		Kinematic objects are not affected by forces and acceleration. Allow to controll object by MovePosition and MoveRotation.
-		*/
-		bool IsKinematic() const { return m_isKinematic; };
+			SLE_EXPORTS void AddBoxCollider(float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
+			SLE_EXPORTS void AddCapsuleCollider(float radius, float halfHeight);
+			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, math::Quaternion rotation);
+			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, float distance);
+			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, math::Vector3 normal);
+			SLE_EXPORTS void SetCollisionFilters(uint32_t mask, uint32_t filter);
 
-		bool IsStatic() const { return m_isStatic; };
+			SLE_EXPORTS math::Vector3 GetVelocity();
 
-		//TODO(Sergio): Move this to private.
-	public:
-		bool m_hasTarget{ false };
-		math::Vector3 m_targetPositon;
-		math::Quaternion m_targetRotation;
+			SLE_EXPORTS void SetVelocity(math::Vector3 velocity);
+			SLE_EXPORTS void AddVelocity(math::Vector3 velocity, float maxV = 0.0f);
+			SLE_EXPORTS void AddForce(math::Vector3 force);
+			SLE_EXPORTS void AddTorque(math::Vector3 torque);
+			SLE_EXPORTS void SetPosition(math::Vector3 position);
+			SLE_EXPORTS void SetRotation(math::Quaternion rotation);
+			SLE_EXPORTS void MovePosition(math::Vector3 position);
+			SLE_EXPORTS void MoveRotation(math::Quaternion rotation);
 
-	private:
-		bool m_isStatic;
+			SLE_EXPORTS bool CheckCollisionWith(uint32_t collisionLayer);
+			SLE_EXPORTS bool IsOverlaping(RigidBody* other);
 
-	private:
-		RigidBody(GameObject* gameObject, float mass, bool isStatic = false);
-	private:
-		Collider m_collider;
+			Collider* GetCollider() { return &m_collider; };
 
-		float m_mass;
-		bool m_isKinematic;
-		friend GameObject;
-	};
+			/**
+			\brief Set Kinematic behaviur.
+			Kinematic objects are not affected by forces and acceleration. Allow to controll object by MovePosition and MoveRotation.
+			*/
+			SLE_EXPORTS void IsKinematic(bool isKinematic);
+
+			/**
+			\brief Get Kinematic state of the object.
+			Kinematic objects are not affected by forces and acceleration. Allow to controll object by MovePosition and MoveRotation.
+			*/
+			bool IsKinematic() const { return m_isKinematic; };
+
+			bool IsStatic() const { return m_isStatic; };
+
+			//TODO(Sergio): Move this to private.
+		public:
+			bool m_hasTarget{ false };
+			math::Vector3 m_targetPositon;
+			math::Quaternion m_targetRotation;
+
+		private:
+			bool m_isStatic;
+
+		private:
+			SLE_EXPORTS RigidBody(GameObject& gameObject, float mass, bool isStatic = false);
+		private:
+			Collider m_collider;
+
+			float m_mass;
+			bool m_isKinematic;
+			friend GameObject;
+		};
+	}
 }

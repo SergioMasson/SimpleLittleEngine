@@ -2,9 +2,11 @@
 #include "playerControllerPhysics.h"
 #include "input.h"
 
-PlayerControllerPhysics::PlayerControllerPhysics(GameObject* gameObject, math::Vector3 worldUp) : BehaviourComponent(gameObject)
+using namespace sle;
+
+PlayerControllerPhysics::PlayerControllerPhysics(GameObject& gameObject, math::Vector3 worldUp) : BehaviourComponent(gameObject)
 {
-	m_PlayerRigidBody = gameObject->GetComponent<physics::RigidBody>();
+	m_PlayerRigidBody = gameObject.GetComponent<physics::RigidBody>();
 
 	m_WorldUp = Normalize(worldUp);
 	m_WorldNorth = Normalize(Cross(m_WorldUp, math::Vector3(1, 0, 0)));
@@ -24,7 +26,7 @@ PlayerControllerPhysics::PlayerControllerPhysics(GameObject* gameObject, math::V
 	math::Vector3 forward = Normalize(Cross(m_WorldUp, foward));
 	m_CurrentHeading = ATan2(-Dot(forward, m_WorldEast), Dot(forward, m_WorldNorth));
 
-	m_cameraOffset = Camera::MainCamera()->GetPosition() - m_gameObject->GetPosition();
+	m_cameraOffset = Camera::MainCamera()->GetPosition() - m_gameObject.GetPosition();
 
 	m_lastCameraRotationX = 0.0f;
 	m_lastCameraRotationY = 0.0f;
@@ -54,7 +56,7 @@ void PlayerControllerPhysics::Update(float deltaT)
 	ApplyMomentum(m_lastCameraRotationX, cameraRotationX, deltaT);
 	ApplyMomentum(m_lastCameraRotationY, cameraRotationY, deltaT);
 
-	auto YcameraRotation = math::Quaternion(m_gameObject->GetRotation() * math::Vector3(0, 1, 0), cameraRotationX);
+	auto YcameraRotation = math::Quaternion(m_gameObject.GetRotation() * math::Vector3(0, 1, 0), cameraRotationX);
 	auto ZcameraRotation = math::Quaternion(Camera::MainCamera()->GetRotation() * math::Vector3(1, 0, 0), cameraRotationY);
 
 	auto totalRotation = YcameraRotation * ZcameraRotation;
@@ -63,9 +65,9 @@ void PlayerControllerPhysics::Update(float deltaT)
 
 	m_cameraOffset = (totalRotation * m_cameraOffset);
 
-	math::Vector3 cameraPosition = m_gameObject->GetPosition() + m_cameraOffset;
+	math::Vector3 cameraPosition = m_gameObject.GetPosition() + m_cameraOffset;
 
-	auto position = m_PlayerRigidBody->GetGameObject()->GetPosition();
+	auto position = m_PlayerRigidBody->GetGameObject().GetPosition();
 
 	Camera::MainCamera()->SetEyeAtUp(cameraPosition, position, math::Vector3(0, 1, 0));
 	Camera::MainCamera()->Update();
@@ -86,7 +88,7 @@ void PlayerControllerPhysics::Update(float deltaT)
 	ApplyMomentum(m_lastCameraDelta, zoomDelta, deltaT);
 
 	m_cameraOffset = m_cameraOffset * (1 + zoomDelta);
-	cameraPosition = m_gameObject->GetPosition() + m_cameraOffset;
+	cameraPosition = m_gameObject.GetPosition() + m_cameraOffset;
 	Camera::MainCamera()->SetEyeAtUp(cameraPosition, position, math::Vector3(0, 1, 0));
 	Camera::MainCamera()->Update();
 
@@ -99,7 +101,7 @@ void PlayerControllerPhysics::FixedUpdate(float deltaT)
 {
 	if (Input::IsPressed(KeyCode::Key_space) || Input::IsPressed(KeyCode::AButton))
 	{
-		if (m_PlayerRigidBody->GetGameObject()->GetPosition().GetY() < 1.0f)
+		if (m_PlayerRigidBody->GetGameObject().GetPosition().GetY() < 1.0f)
 			m_PlayerRigidBody->AddVelocity(math::Vector3(0, 3, 0));
 	}
 
@@ -139,14 +141,14 @@ void PlayerControllerPhysics::FixedUpdate(float deltaT)
 	auto motionMag = math::Length(motionVector);
 
 	//m_PlayerRigidBody->SetVelocity(position * 100);
-	m_PlayerRigidBody->AddVelocity(position * 20.0f, 90.0f * motionMag);
+	m_PlayerRigidBody->AddVelocity(position * 20.0f, 18.0F);
 
 	//Update player orientation
 	if (math::Length(motionVector) > 0.000001f)
 	{
 		float size = math::Length(motionVector);
 		math::Quaternion snewRotation{ math::Matrix3{DirectX::XMMatrixLookToLH(math::Vector3{0, 0, 0}, math::Normalize(motionVector), m_WorldUp)} };
-		snewRotation = math::Lerp(m_gameObject->GetRotation(), ~snewRotation, size);
+		snewRotation = math::Lerp(m_gameObject.GetRotation(), ~snewRotation, size);
 
 		m_PlayerRigidBody->SetRotation(snewRotation);
 	}

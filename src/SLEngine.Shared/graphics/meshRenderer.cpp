@@ -12,7 +12,9 @@
 
 using namespace std;
 using namespace DirectX;
-using namespace graphics;
+
+using namespace sle;
+using namespace sle::graphics;
 
 std::set<MeshRenderer*> graphics::g_activeMeshRenderers;
 
@@ -738,7 +740,7 @@ void graphics::MeshData::LoadFromOBJFile(const wchar_t* filename, MeshData& mesh
 	in.close();
 }
 
-graphics::MeshRenderer::MeshRenderer(GameObject* gameObject, MeshData* data, Material material) :
+graphics::MeshRenderer::MeshRenderer(GameObject& gameObject, MeshData* data, Material material) :
 	m_gameObject{ gameObject },
 	m_meshData{ data },
 	m_material{ material }
@@ -806,5 +808,5 @@ graphics::MeshRenderer::~MeshRenderer()
 
 math::Matrix4 graphics::MeshRenderer::GetWorldMatrix() const
 {
-	return m_gameObject->GetTransform();
+	return m_gameObject.GetTransform();
 }

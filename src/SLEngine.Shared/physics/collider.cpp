@@ -3,6 +3,8 @@
 #include "../mathHelpers.h"
 #include "physicsCore.h"
 
+using namespace sle;
+
 void physics::Collider::SetLocalPosition(math::Vector3 localPosition)
 {
 	physics::ColliderSetLocalPosition(this, localPosition);

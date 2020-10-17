@@ -56,6 +56,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)dxassert.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gameObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)graphics\coreGraphics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)graphics\coreGraphicsD3D12.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)graphics\dds.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)graphics\graphicsContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)graphics\graphicsUtils.h" />
@@ -91,7 +92,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)physics\collider.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)physics\physicsCore.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)physics\rigidBody.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)sle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)systemTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)types_c.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)shaders\BoxPS.hlsl">

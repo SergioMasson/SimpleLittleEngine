@@ -4,18 +4,17 @@
 #include "camera.h"
 #include "gameObject.h"
 
-class PlayerController : public BehaviourComponent
+class PlayerController : public sle::BehaviourComponent
 {
 public:
-	PlayerController(GameObject* gameObject, math::Vector3 worldUp);
+	PlayerController(sle::GameObject& gameObject, sle::math::Vector3 worldUp);
 	void Update(float deltaT) override;
 
 private:
-
-	math::Vector3 m_WorldUp;
-	math::Vector3 m_WorldNorth;
-	math::Vector3 m_WorldEast;
-	math::Vector3 m_cameraOffset;
+	sle::math::Vector3 m_WorldUp;
+	sle::math::Vector3 m_WorldNorth;
+	sle::math::Vector3 m_WorldEast;
+	sle::math::Vector3 m_cameraOffset;
 
 	float m_MoveSpeed;
 	float m_RotationSpeed;

@@ -1,218 +1,221 @@
 #pragma once
 
-class Color
+namespace sle
 {
-public:
-
-	inline Color()
+	class Color
 	{
-		m_color.x = 0.0f;
-		m_color.y = 0.0f;
-		m_color.z = 0.0f;
-		m_color.w = 0.0f;
-	}
+	public:
 
-	inline Color(DirectX::XMFLOAT4 vec)
-	{
-		m_color = vec;
-	}
+		inline Color()
+		{
+			m_color.x = 0.0f;
+			m_color.y = 0.0f;
+			m_color.z = 0.0f;
+			m_color.w = 0.0f;
+		}
 
-	inline Color(DirectX::XMFLOAT3 vec, float alpha)
-	{
-		m_color.x = vec.x;
-		m_color.y = vec.y;
-		m_color.z = vec.z;
-		m_color.w = alpha;
-	}
+		inline Color(DirectX::XMFLOAT4 vec)
+		{
+			m_color = vec;
+		}
 
-	inline Color(UINT32 rgb, FLOAT a = 1.0)
-	{
-		Init(rgb, a);
-	}
+		inline Color(DirectX::XMFLOAT3 vec, float alpha)
+		{
+			m_color.x = vec.x;
+			m_color.y = vec.y;
+			m_color.z = vec.z;
+			m_color.w = alpha;
+		}
 
-	inline Color(Color color, float alpha)
-	{
-		m_color.x = color.m_color.x;
-		m_color.y = color.m_color.y;
-		m_color.z = color.m_color.z;
-		m_color.w = alpha;
-	}
+		inline Color(UINT32 rgb, FLOAT a = 1.0)
+		{
+			Init(rgb, a);
+		}
 
-	inline Color(
-		FLOAT red,
-		FLOAT green,
-		FLOAT blue,
-		FLOAT alpha = 1.0
-	)
-	{
-		m_color.x = red;
-		m_color.y = green;
-		m_color.z = blue;
-		m_color.w = alpha;
-	}
+		inline Color(Color color, float alpha)
+		{
+			m_color.x = color.m_color.x;
+			m_color.y = color.m_color.y;
+			m_color.z = color.m_color.z;
+			m_color.w = alpha;
+		}
 
-	operator D2D1::ColorF() const { return D2D1::ColorF(m_color.x, m_color.y, m_color.z, m_color.w); };
-	operator DirectX::XMFLOAT4() const { return m_color; };
+		inline Color(
+			FLOAT red,
+			FLOAT green,
+			FLOAT blue,
+			FLOAT alpha = 1.0
+		)
+		{
+			m_color.x = red;
+			m_color.y = green;
+			m_color.z = blue;
+			m_color.w = alpha;
+		}
 
-private:
+		operator D2D1::ColorF() const { return D2D1::ColorF(m_color.x, m_color.y, m_color.z, m_color.w); };
+		operator DirectX::XMFLOAT4() const { return m_color; };
 
-	inline void Init(UINT32 rgb, FLOAT alpha)
-	{
-		m_color.x = static_cast<FLOAT>((rgb & sc_redMask) >> sc_redShift) / 255.f;
-		m_color.y = static_cast<FLOAT>((rgb & sc_greenMask) >> sc_greenShift) / 255.f;
-		m_color.z = static_cast<FLOAT>((rgb & sc_blueMask) >> sc_blueShift) / 255.f;
-		m_color.w = alpha;
-	}
+	private:
 
-	DirectX::XMFLOAT4 m_color;
+		inline void Init(UINT32 rgb, FLOAT alpha)
+		{
+			m_color.x = static_cast<FLOAT>((rgb & sc_redMask) >> sc_redShift) / 255.f;
+			m_color.y = static_cast<FLOAT>((rgb & sc_greenMask) >> sc_greenShift) / 255.f;
+			m_color.z = static_cast<FLOAT>((rgb & sc_blueMask) >> sc_blueShift) / 255.f;
+			m_color.w = alpha;
+		}
 
-	static const UINT32 sc_redShift = 16;
-	static const UINT32 sc_greenShift = 8;
-	static const UINT32 sc_blueShift = 0;
+		DirectX::XMFLOAT4 m_color;
 
-	static const UINT32 sc_redMask = 0xff << sc_redShift;
-	static const UINT32 sc_greenMask = 0xff << sc_greenShift;
-	static const UINT32 sc_blueMask = 0xff << sc_blueShift;
+		static const UINT32 sc_redShift = 16;
+		static const UINT32 sc_greenShift = 8;
+		static const UINT32 sc_blueShift = 0;
 
-public:
-	static const Color AliceBlue;
-	static const Color AntiqueWhite;
-	static const Color Aqua;
-	static const Color Aquamarine;
-	static const Color Azure;
-	static const Color Beige;
-	static const Color Bisque;
-	static const Color Black;
-	static const Color BlanchedAlmond;
-	static const Color Blue;
-	static const Color BlueViolet;
-	static const Color Brown;
-	static const Color BurlyWood;
-	static const Color CadetBlue;
-	static const Color Chartreuse;
-	static const Color Chocolate;
-	static const Color Coral;
-	static const Color CornflowerBlue;
-	static const Color Cornsilk;
-	static const Color Crimson;
-	static const Color Cyan;
-	static const Color DarkBlue;
-	static const Color DarkCyan;
-	static const Color DarkGoldenrod;
-	static const Color DarkGray;
-	static const Color DarkGreen;
-	static const Color DarkKhaki;
-	static const Color DarkMagenta;
-	static const Color DarkOliveGreen;
-	static const Color DarkOrange;
-	static const Color DarkOrchid;
-	static const Color DarkRed;
-	static const Color DarkSalmon;
-	static const Color DarkSeaGreen;
-	static const Color DarkSlateBlue;
-	static const Color DarkSlateGray;
-	static const Color DarkTurquoise;
-	static const Color DarkViolet;
-	static const Color DeepPink;
-	static const Color DeepSkyBlue;
-	static const Color DimGray;
-	static const Color DodgerBlue;
-	static const Color Firebrick;
-	static const Color FloralWhite;
-	static const Color ForestGreen;
-	static const Color Fuchsia;
-	static const Color Gainsboro;
-	static const Color GhostWhite;
-	static const Color Gold;
-	static const Color Goldenrod;
-	static const Color Gray;
-	static const Color Green;
-	static const Color GreenYellow;
-	static const Color Honeydew;
-	static const Color HotPink;
-	static const Color IndianRed;
-	static const Color Indigo;
-	static const Color Ivory;
-	static const Color Khaki;
-	static const Color Lavender;
-	static const Color LavenderBlush;
-	static const Color LawnGreen;
-	static const Color LemonChiffon;
-	static const Color LightBlue;
-	static const Color LightCoral;
-	static const Color LightCyan;
-	static const Color LightGoldenrodYellow;
-	static const Color LightGreen;
-	static const Color LightGray;
-	static const Color LightPink;
-	static const Color LightSalmon;
-	static const Color LightSeaGreen;
-	static const Color LightSkyBlue;
-	static const Color LightSlateGray;
-	static const Color LightSteelBlue;
-	static const Color LightYellow;
-	static const Color Lime;
-	static const Color LimeGreen;
-	static const Color Linen;
-	static const Color Magenta;
-	static const Color Maroon;
-	static const Color MediumAquamarine;
-	static const Color MediumBlue;
-	static const Color MediumOrchid;
-	static const Color MediumPurple;
-	static const Color MediumSeaGreen;
-	static const Color MediumSlateBlue;
-	static const Color MediumSpringGreen;
-	static const Color MediumTurquoise;
-	static const Color MediumVioletRed;
-	static const Color MidnightBlue;
-	static const Color MintCream;
-	static const Color MistyRose;
-	static const Color Moccasin;
-	static const Color NavajoWhite;
-	static const Color Navy;
-	static const Color OldLace;
-	static const Color Olive;
-	static const Color OliveDrab;
-	static const Color Orange;
-	static const Color OrangeRed;
-	static const Color Orchid;
-	static const Color PaleGoldenrod;
-	static const Color PaleGreen;
-	static const Color PaleTurquoise;
-	static const Color PaleVioletRed;
-	static const Color PapayaWhip;
-	static const Color PeachPuff;
-	static const Color Peru;
-	static const Color Pink;
-	static const Color Plum;
-	static const Color PowderBlue;
-	static const Color Purple;
-	static const Color Red;
-	static const Color RosyBrown;
-	static const Color RoyalBlue;
-	static const Color SaddleBrown;
-	static const Color Salmon;
-	static const Color SandyBrown;
-	static const Color SeaGreen;
-	static const Color SeaShell;
-	static const Color Sienna;
-	static const Color Silver;
-	static const Color SkyBlue;
-	static const Color SlateBlue;
-	static const Color SlateGray;
-	static const Color Snow;
-	static const Color SpringGreen;
-	static const Color	SteelBlue;
-	static const Color Tan;
-	static const Color Teal;
-	static const Color Thistle;
-	static const Color Tomato;
-	static const Color Turquoise;
-	static const Color Violet;
-	static const Color Wheat;
-	static const Color White;
-	static const Color WhiteSmoke;
-	static const Color Yellow;
-	static const Color YellowGreen;
-};
+		static const UINT32 sc_redMask = 0xff << sc_redShift;
+		static const UINT32 sc_greenMask = 0xff << sc_greenShift;
+		static const UINT32 sc_blueMask = 0xff << sc_blueShift;
+
+	public:
+		SLE_EXPORTS static const Color AliceBlue;
+		SLE_EXPORTS static const Color AntiqueWhite;
+		SLE_EXPORTS static const Color Aqua;
+		SLE_EXPORTS static const Color Aquamarine;
+		SLE_EXPORTS static const Color Azure;
+		SLE_EXPORTS static const Color Beige;
+		SLE_EXPORTS static const Color Bisque;
+		SLE_EXPORTS static const Color Black;
+		SLE_EXPORTS static const Color BlanchedAlmond;
+		SLE_EXPORTS static const Color Blue;
+		SLE_EXPORTS static const Color BlueViolet;
+		SLE_EXPORTS static const Color Brown;
+		SLE_EXPORTS static const Color BurlyWood;
+		SLE_EXPORTS static const Color CadetBlue;
+		SLE_EXPORTS static const Color Chartreuse;
+		SLE_EXPORTS static const Color Chocolate;
+		SLE_EXPORTS static const Color Coral;
+		SLE_EXPORTS static const Color CornflowerBlue;
+		SLE_EXPORTS static const Color Cornsilk;
+		SLE_EXPORTS static const Color Crimson;
+		SLE_EXPORTS static const Color Cyan;
+		SLE_EXPORTS static const Color DarkBlue;
+		SLE_EXPORTS static const Color DarkCyan;
+		SLE_EXPORTS static const Color DarkGoldenrod;
+		SLE_EXPORTS static const Color DarkGray;
+		SLE_EXPORTS static const Color DarkGreen;
+		SLE_EXPORTS static const Color DarkKhaki;
+		SLE_EXPORTS static const Color DarkMagenta;
+		SLE_EXPORTS static const Color DarkOliveGreen;
+		SLE_EXPORTS static const Color DarkOrange;
+		SLE_EXPORTS static const Color DarkOrchid;
+		SLE_EXPORTS static const Color DarkRed;
+		SLE_EXPORTS static const Color DarkSalmon;
+		SLE_EXPORTS static const Color DarkSeaGreen;
+		SLE_EXPORTS static const Color DarkSlateBlue;
+		SLE_EXPORTS static const Color DarkSlateGray;
+		SLE_EXPORTS static const Color DarkTurquoise;
+		SLE_EXPORTS static const Color DarkViolet;
+		SLE_EXPORTS static const Color DeepPink;
+		SLE_EXPORTS static const Color DeepSkyBlue;
+		SLE_EXPORTS static const Color DimGray;
+		SLE_EXPORTS static const Color DodgerBlue;
+		SLE_EXPORTS static const Color Firebrick;
+		SLE_EXPORTS static const Color FloralWhite;
+		SLE_EXPORTS static const Color ForestGreen;
+		SLE_EXPORTS static const Color Fuchsia;
+		SLE_EXPORTS static const Color Gainsboro;
+		SLE_EXPORTS static const Color GhostWhite;
+		SLE_EXPORTS static const Color Gold;
+		SLE_EXPORTS static const Color Goldenrod;
+		SLE_EXPORTS static const Color Gray;
+		SLE_EXPORTS static const Color Green;
+		SLE_EXPORTS static const Color GreenYellow;
+		SLE_EXPORTS static const Color Honeydew;
+		SLE_EXPORTS static const Color HotPink;
+		SLE_EXPORTS static const Color IndianRed;
+		SLE_EXPORTS static const Color Indigo;
+		SLE_EXPORTS static const Color Ivory;
+		SLE_EXPORTS static const Color Khaki;
+		SLE_EXPORTS static const Color Lavender;
+		SLE_EXPORTS static const Color LavenderBlush;
+		SLE_EXPORTS static const Color LawnGreen;
+		SLE_EXPORTS static const Color LemonChiffon;
+		SLE_EXPORTS static const Color LightBlue;
+		SLE_EXPORTS static const Color LightCoral;
+		SLE_EXPORTS static const Color LightCyan;
+		SLE_EXPORTS static const Color LightGoldenrodYellow;
+		SLE_EXPORTS static const Color LightGreen;
+		SLE_EXPORTS static const Color LightGray;
+		SLE_EXPORTS static const Color LightPink;
+		SLE_EXPORTS static const Color LightSalmon;
+		SLE_EXPORTS static const Color LightSeaGreen;
+		SLE_EXPORTS static const Color LightSkyBlue;
+		SLE_EXPORTS static const Color LightSlateGray;
+		SLE_EXPORTS static const Color LightSteelBlue;
+		SLE_EXPORTS static const Color LightYellow;
+		SLE_EXPORTS static const Color Lime;
+		SLE_EXPORTS static const Color LimeGreen;
+		SLE_EXPORTS static const Color Linen;
+		SLE_EXPORTS static const Color Magenta;
+		SLE_EXPORTS static const Color Maroon;
+		SLE_EXPORTS static const Color MediumAquamarine;
+		SLE_EXPORTS static const Color MediumBlue;
+		SLE_EXPORTS static const Color MediumOrchid;
+		SLE_EXPORTS static const Color MediumPurple;
+		SLE_EXPORTS static const Color MediumSeaGreen;
+		SLE_EXPORTS static const Color MediumSlateBlue;
+		SLE_EXPORTS static const Color MediumSpringGreen;
+		SLE_EXPORTS static const Color MediumTurquoise;
+		SLE_EXPORTS static const Color MediumVioletRed;
+		SLE_EXPORTS static const Color MidnightBlue;
+		SLE_EXPORTS static const Color MintCream;
+		SLE_EXPORTS static const Color MistyRose;
+		SLE_EXPORTS static const Color Moccasin;
+		SLE_EXPORTS static const Color NavajoWhite;
+		SLE_EXPORTS static const Color Navy;
+		SLE_EXPORTS static const Color OldLace;
+		SLE_EXPORTS static const Color Olive;
+		SLE_EXPORTS static const Color OliveDrab;
+		SLE_EXPORTS static const Color Orange;
+		SLE_EXPORTS static const Color OrangeRed;
+		SLE_EXPORTS static const Color Orchid;
+		SLE_EXPORTS static const Color PaleGoldenrod;
+		SLE_EXPORTS static const Color PaleGreen;
+		SLE_EXPORTS static const Color PaleTurquoise;
+		SLE_EXPORTS static const Color PaleVioletRed;
+		SLE_EXPORTS static const Color PapayaWhip;
+		SLE_EXPORTS static const Color PeachPuff;
+		SLE_EXPORTS static const Color Peru;
+		SLE_EXPORTS static const Color Pink;
+		SLE_EXPORTS static const Color Plum;
+		SLE_EXPORTS static const Color PowderBlue;
+		SLE_EXPORTS static const Color Purple;
+		SLE_EXPORTS static const Color Red;
+		SLE_EXPORTS static const Color RosyBrown;
+		SLE_EXPORTS static const Color RoyalBlue;
+		SLE_EXPORTS static const Color SaddleBrown;
+		SLE_EXPORTS static const Color Salmon;
+		SLE_EXPORTS static const Color SandyBrown;
+		SLE_EXPORTS static const Color SeaGreen;
+		SLE_EXPORTS static const Color SeaShell;
+		SLE_EXPORTS static const Color Sienna;
+		SLE_EXPORTS static const Color Silver;
+		SLE_EXPORTS static const Color SkyBlue;
+		SLE_EXPORTS static const Color SlateBlue;
+		SLE_EXPORTS static const Color SlateGray;
+		SLE_EXPORTS static const Color Snow;
+		SLE_EXPORTS static const Color SpringGreen;
+		SLE_EXPORTS static const Color	SteelBlue;
+		SLE_EXPORTS static const Color Tan;
+		SLE_EXPORTS static const Color Teal;
+		SLE_EXPORTS static const Color Thistle;
+		SLE_EXPORTS static const Color Tomato;
+		SLE_EXPORTS static const Color Turquoise;
+		SLE_EXPORTS static const Color Violet;
+		SLE_EXPORTS static const Color Wheat;
+		SLE_EXPORTS static const Color White;
+		SLE_EXPORTS static const Color WhiteSmoke;
+		SLE_EXPORTS static const Color Yellow;
+		SLE_EXPORTS static const Color YellowGreen;
+	};
+}

@@ -2,6 +2,8 @@
 #include "graphicsContext.h"
 #include "coreGraphics.h"
 
+using namespace sle;
+
 void graphics::GraphicsContext::SetRenderTargets(UINT NumRTVs, ID3D11RenderTargetView* const* renderTargets)
 {
 	g_d3dImmediateContext->OMSetRenderTargets(NumRTVs, renderTargets, nullptr);

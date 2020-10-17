@@ -6,11 +6,11 @@
 class Enemy;
 extern std::set<Enemy*> g_activeEnemies;
 
-class Enemy : public BehaviourComponent
+class Enemy : public sle::BehaviourComponent
 {
 private:
-	Enemy(GameObject* gameObject, graphics::Texture2D* texture) :
-		BehaviourComponent{ gameObject },
+	Enemy(sle::GameObject& gameObject, sle::graphics::Texture2D texture) :
+		sle::BehaviourComponent{ gameObject },
 		m_detectedTexture{ texture },
 		m_isDetected{ false }
 	{
@@ -25,14 +25,14 @@ private:
 public:
 	void SetDetected();
 	bool IsDetected() { return m_isDetected; }
-	void OnCollision(physics::RigidBody* other) override;
+	void OnCollision(sle::physics::RigidBody* other) override;
 	void FixedUpdate(float detalT) override;
-	math::Vector3 GetPosition() { return m_gameObject->GetPosition(); }
-	math::BoudingBox WBoudingBox() const { return m_gameObject->GetMeshRenderer()->WBoudingBox(); }
+	sle::math::Vector3 GetPosition() { return m_gameObject.GetPosition(); }
+	sle::math::BoudingBox WBoudingBox() const { return m_gameObject.GetMeshRenderer()->WBoudingBox(); }
 
 private:
-	graphics::Texture2D* m_detectedTexture;
+	sle::graphics::Texture2D m_detectedTexture;
 	bool m_isDetected;
 
-	friend GameObject;
+	friend sle::GameObject;
 };

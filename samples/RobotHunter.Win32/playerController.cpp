@@ -2,7 +2,9 @@
 #include "playerController.h"
 #include "input.h"
 
-PlayerController::PlayerController(GameObject* gameObject, math::Vector3 worldUp) : BehaviourComponent(gameObject)
+using namespace sle;
+
+PlayerController::PlayerController(GameObject& gameObject, math::Vector3 worldUp) : BehaviourComponent(gameObject)
 {
 	m_WorldUp = Normalize(worldUp);
 	m_WorldNorth = Normalize(Cross(m_WorldUp, math::Vector3(1, 0, 0)));
@@ -22,7 +24,7 @@ PlayerController::PlayerController(GameObject* gameObject, math::Vector3 worldUp
 	math::Vector3 forward = Normalize(Cross(m_WorldUp, foward));
 	m_CurrentHeading = ATan2(-Dot(forward, m_WorldEast), Dot(forward, m_WorldNorth));
 
-	m_cameraOffset = Camera::MainCamera()->GetPosition() - m_gameObject->GetPosition();
+	m_cameraOffset = Camera::MainCamera()->GetPosition() - m_gameObject.GetPosition();
 
 	m_lastCameraRotationX = 0.0f;
 	m_lastCameraRotationY = 0.0f;
@@ -67,16 +69,16 @@ void PlayerController::Update(float deltaT)
 	if (hasBoost)
 		motionVector = motionVector * 1.5f;
 
-	math::Vector3 position = m_gameObject->GetPosition() + motionVector;
-	m_gameObject->SetPosition(position);
+	math::Vector3 position = m_gameObject.GetPosition() + motionVector;
+	m_gameObject.SetPosition(position);
 
 	//Update player orientation
 	if (math::Length(motionVector) > 0.000001f)
 	{
 		float size = math::Length(motionVector);
 		math::Quaternion snewRotation{ math::Matrix3{DirectX::XMMatrixLookToLH(math::Vector3{0, 0, 0}, math::Normalize(motionVector), m_WorldUp)} };
-		snewRotation = math::Lerp(m_gameObject->GetRotation(), ~snewRotation, size);
-		m_gameObject->SetRotation(snewRotation);
+		snewRotation = math::Lerp(m_gameObject.GetRotation(), ~snewRotation, size);
+		m_gameObject.SetRotation(snewRotation);
 	}
 
 	//Update camera rotation
@@ -98,7 +100,7 @@ void PlayerController::Update(float deltaT)
 	ApplyMomentum(m_lastCameraRotationX, cameraRotationX, deltaT);
 	ApplyMomentum(m_lastCameraRotationY, cameraRotationY, deltaT);
 
-	auto YcameraRotation = math::Quaternion(m_gameObject->GetRotation() * math::Vector3(0, 1, 0), cameraRotationX);
+	auto YcameraRotation = math::Quaternion(m_gameObject.GetRotation() * math::Vector3(0, 1, 0), cameraRotationX);
 	auto ZcameraRotation = math::Quaternion(Camera::MainCamera()->GetRotation() * math::Vector3(1, 0, 0), cameraRotationY);
 
 	auto totalRotation = YcameraRotation * ZcameraRotation;
@@ -107,7 +109,7 @@ void PlayerController::Update(float deltaT)
 
 	m_cameraOffset = (totalRotation * m_cameraOffset);
 
-	math::Vector3 cameraPosition = m_gameObject->GetPosition() + m_cameraOffset;
+	math::Vector3 cameraPosition = m_gameObject.GetPosition() + m_cameraOffset;
 
 	Camera::MainCamera()->SetEyeAtUp(cameraPosition, position, math::Vector3(0, 1, 0));
 	Camera::MainCamera()->Update();
@@ -128,7 +130,7 @@ void PlayerController::Update(float deltaT)
 	ApplyMomentum(m_lastCameraDelta, zoomDelta, deltaT);
 
 	m_cameraOffset = m_cameraOffset * (1 + zoomDelta);
-	cameraPosition = m_gameObject->GetPosition() + m_cameraOffset;
+	cameraPosition = m_gameObject.GetPosition() + m_cameraOffset;
 	Camera::MainCamera()->SetEyeAtUp(cameraPosition, position, math::Vector3(0, 1, 0));
 	Camera::MainCamera()->Update();
 

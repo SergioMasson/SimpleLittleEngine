@@ -1,15 +1,18 @@
 #pragma once
 
-namespace graphics
+namespace sle
 {
-	namespace FXAA
+	namespace graphics
 	{
-		void Initialize();
-		void Resize(UINT width, UINT height);
-		void Shutdown();
-		void Render(ID3D11RenderTargetView* const* target);
+		namespace fxaa
+		{
+			SLE_EXPORTS void Initialize();
+			SLE_EXPORTS void Resize(UINT width, UINT height);
+			SLE_EXPORTS void Shutdown();
+			SLE_EXPORTS void Render(ID3D11RenderTargetView* const* target);
 
-		extern bool FXAAEnable;
-		extern Microsoft::WRL::ComPtr<ID3D11RenderTargetView> g_pProxyTextureRTV;
+			SLE_EXPORTS extern bool FXAAEnable;
+			SLE_EXPORTS extern Microsoft::WRL::ComPtr<ID3D11RenderTargetView> g_pProxyTextureRTV;
+		}
 	}
 }

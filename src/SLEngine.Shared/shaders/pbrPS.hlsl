@@ -111,7 +111,7 @@ float4 main(PixelShaderInput pin) : SV_Target
 	// Sample input textures to get shading model params.
     float3 albedo = gMaterial.Color.rgb * gDiffuseMap.Sample(gsamLinear, (pin.texcoord * gTextureScale) + gTextureDisplacement).rgb;
     
-    albedo = pow(albedo, 2.2f);
+    albedo = pow(abs(albedo), 2.2f);
     
     float metalness = gMaterial.Metalness;
     float roughness = gMaterial.Roughness;
@@ -134,9 +134,9 @@ float4 main(PixelShaderInput pin) : SV_Target
 	// Direct lighting calculation for analytical lights.
     float3 directLighting = 0.0;
     
-    for (uint i = 0; i < NumberOfLights; ++i)
+    for (int i = 0; i < NumberOfLights; ++i)
     {
-        float3 Lradiance = Lights[i].Color;
+        float3 Lradiance = Lights[i].Color.rgb;
         float3 Li = -Lights[i].Direction;
         float att = 1;
 		// Half-vector between Li and Lo.
@@ -144,7 +144,7 @@ float4 main(PixelShaderInput pin) : SV_Target
         if (Lights[i].LightType == DIR_LIGHT)
         {
             Li = -Lights[i].Direction;
-            Lradiance = Lights[i].Color * Lights[i].Intensity;
+            Lradiance = Lights[i].Color.rgb * Lights[i].Intensity;
         }
         if (Lights[i].LightType == SPOT_LIGHT)
         {
@@ -227,13 +227,13 @@ float4 main(PixelShaderInput pin) : SV_Target
  //       ambientLighting = diffuseIBL + specularIBL;
  //   }
 
-    directLighting += pow(gEmissionMap.Sample(gsamLinear, pin.texcoord).rgb, 2.2f);
-    directLighting += pow(gMaterial.Emission.rgb, 2.2f);
+    directLighting += pow(abs(gEmissionMap.Sample(gsamLinear, pin.texcoord).rgb), 2.2f);
+    directLighting += pow(abs(gMaterial.Emission.rgb), 2.2f);
    
     //directLighting += gEmissionMap.Sample(gsamLinear, pin.texcoord).rgb;
     //directLighting += gMaterial.Emission.rgb;
     
-    directLighting = pow(directLighting, 1 / 2.2f);
+    directLighting = pow(abs(directLighting), 1 / 2.2f);
     float luma = (0.2126 * directLighting.r + 0.7152 * directLighting.g + 0.0722 * directLighting.b);
     
 	// Final fragment color.

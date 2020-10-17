@@ -2,6 +2,8 @@
 #include "guiPanel.h"
 #include "../coreGraphics.h"
 
+using namespace sle;
+
 graphics::UI::GuiPanel::GuiPanel(DrawableElement* parent, float x, float y, float width, float height) : DrawableElement{ parent, x, y, width, height }, m_color{ D2D1::ColorF::Black }
 {
 	SetColor(D2D1::ColorF::Black);
@@ -20,4 +22,9 @@ void graphics::UI::GuiPanel::SetColor(Color color)
 	m_brush.Reset();
 	m_color = color;
 	ASSERT_SUCCEEDED(graphics::g_d2dDeviceContext->CreateSolidColorBrush(color, m_brush.GetAddressOf()));
+}
+
+Color sle::graphics::UI::GuiPanel::GetColor() const
+{
+	return m_color;
 }

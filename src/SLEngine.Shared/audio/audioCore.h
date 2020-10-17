@@ -1,8 +1,10 @@
 #pragma once
 
-namespace audio
+namespace sle
 {
-	void Initialize();
-
-	void PlayAudioFile(std::wstring filePath, bool loop = false);
+	namespace audio
+	{
+		SLE_EXPORTS void Initialize();
+		SLE_EXPORTS void PlayAudioFile(std::wstring filePath, bool loop = false);
+	}
 }

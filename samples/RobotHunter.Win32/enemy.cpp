@@ -6,33 +6,28 @@
 #include "math/random.h"
 #include "physics/rigidBody.h"
 
+using namespace sle;
+
 std::set<Enemy*> g_activeEnemies;
 
 constexpr int ColorCount = 10;
 
 void Enemy::SetDetected()
 {
-	auto r = math::g_RNG.NextFloat();
-	auto g = math::g_RNG.NextFloat();
-	auto b = math::g_RNG.NextFloat();
-
-	//auto enemyColor = enemyColors[index];
-	Color enemyColor = Color(r, g, b, 1.0f);
+	sle::Color enemyColor = sle::Color(0xE500FF);
 
 	m_isDetected = true;
-	//m_meshRenderer->SetAlbedoTexture(m_detectedTexture);
-	m_gameObject->GetMeshRenderer()->SetEmission(enemyColor);
+	m_gameObject.GetMeshRenderer()->SetEmission(enemyColor);
 
 	//Create a new game object for light.
-	GameObject* enemyLight = new GameObject();
-	enemyLight->SetParent(m_gameObject);
-	enemyLight->SetPosition(math::Vector3(0, 0.5f, 0));
-	enemyLight->AddComponent<LightComponent>(enemyColor, LightType::Point, 7.0f, 10.0f);
-
-	audio::PlayAudioFile(L"audioFiles/enemy.wav");
+	sle::GameObject* enemyLight = new sle::GameObject();
+	enemyLight->SetParent(&m_gameObject);
+	enemyLight->SetPosition(sle::math::Vector3(0, 0.5f, 0));
+	enemyLight->AddComponent<sle::LightComponent>(enemyColor, sle::LightType::Point, 7.0f, 10.0f);
+	sle::audio::PlayAudioFile(L"audioFiles/enemy.wav");
 }
 
-void Enemy::OnCollision(physics::RigidBody* other)
+void Enemy::OnCollision(sle::physics::RigidBody* other)
 {
 	if (!m_isDetected)
 		SetDetected();

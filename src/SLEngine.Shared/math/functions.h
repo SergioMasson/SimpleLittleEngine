@@ -17,20 +17,22 @@
 #include "matrix3.h"
 #include "matrix4.h"
 
-namespace math
+namespace sle
 {
-	// To allow floats to implicitly construct Scalars, we need to clarify these operators and suppress
-// upconversion.
-	INLINE bool operator<  (Scalar lhs, float rhs) { return (float)lhs < rhs; }
-	INLINE bool operator<= (Scalar lhs, float rhs) { return (float)lhs <= rhs; }
-	INLINE bool operator>  (Scalar lhs, float rhs) { return (float)lhs > rhs; }
-	INLINE bool operator>= (Scalar lhs, float rhs) { return (float)lhs >= rhs; }
-	INLINE bool operator== (Scalar lhs, float rhs) { return (float)lhs == rhs; }
-	INLINE bool operator<  (float lhs, Scalar rhs) { return lhs < (float)rhs; }
-	INLINE bool operator<= (float lhs, Scalar rhs) { return lhs <= (float)rhs; }
-	INLINE bool operator>  (float lhs, Scalar rhs) { return lhs > (float)rhs; }
-	INLINE bool operator>= (float lhs, Scalar rhs) { return lhs >= (float)rhs; }
-	INLINE bool operator== (float lhs, Scalar rhs) { return lhs == (float)rhs; }
+	namespace math
+	{
+		// To allow floats to implicitly construct Scalars, we need to clarify these operators and suppress
+	// upconversion.
+		INLINE bool operator<  (Scalar lhs, float rhs) { return (float)lhs < rhs; }
+		INLINE bool operator<= (Scalar lhs, float rhs) { return (float)lhs <= rhs; }
+		INLINE bool operator>  (Scalar lhs, float rhs) { return (float)lhs > rhs; }
+		INLINE bool operator>= (Scalar lhs, float rhs) { return (float)lhs >= rhs; }
+		INLINE bool operator== (Scalar lhs, float rhs) { return (float)lhs == rhs; }
+		INLINE bool operator<  (float lhs, Scalar rhs) { return lhs < (float)rhs; }
+		INLINE bool operator<= (float lhs, Scalar rhs) { return lhs <= (float)rhs; }
+		INLINE bool operator>  (float lhs, Scalar rhs) { return lhs > (float)rhs; }
+		INLINE bool operator>= (float lhs, Scalar rhs) { return lhs >= (float)rhs; }
+		INLINE bool operator== (float lhs, Scalar rhs) { return lhs == (float)rhs; }
 
 #define CREATE_SIMD_FUNCTIONS( TYPE ) \
     INLINE TYPE Sqrt( TYPE s ) { return TYPE(XMVectorSqrt(s)); } \
@@ -54,58 +56,59 @@ namespace math
     INLINE TYPE Max( TYPE a, TYPE b ) { return TYPE(XMVectorMax(a, b)); } \
     INLINE TYPE Min( TYPE a, TYPE b ) { return TYPE(XMVectorMin(a, b)); }
 
-	CREATE_SIMD_FUNCTIONS(Scalar)
-		CREATE_SIMD_FUNCTIONS(Vector3)
-		CREATE_SIMD_FUNCTIONS(Vector4)
+		CREATE_SIMD_FUNCTIONS(Scalar)
+			CREATE_SIMD_FUNCTIONS(Vector3)
+			CREATE_SIMD_FUNCTIONS(Vector4)
 
-		INLINE float Sqrt(float s) { return Sqrt(Scalar(s)); }
-	INLINE float Recip(float s) { return Recip(Scalar(s)); }
-	INLINE float RecipSqrt(float s) { return RecipSqrt(Scalar(s)); }
-	INLINE float Floor(float s) { return Floor(Scalar(s)); }
-	INLINE float Ceiling(float s) { return Ceiling(Scalar(s)); }
-	INLINE float Round(float s) { return Round(Scalar(s)); }
-	INLINE float Abs(float s) { return s < 0.0f ? -s : s; }
-	INLINE float Exp(float s) { return Exp(Scalar(s)); }
-	INLINE float Pow(float b, float e) { return Pow(Scalar(b), Scalar(e)); }
-	INLINE float Log(float s) { return Log(Scalar(s)); }
-	INLINE float Sin(float s) { return Sin(Scalar(s)); }
-	INLINE float Cos(float s) { return Cos(Scalar(s)); }
-	INLINE float Tan(float s) { return Tan(Scalar(s)); }
-	INLINE float ASin(float s) { return ASin(Scalar(s)); }
-	INLINE float ACos(float s) { return ACos(Scalar(s)); }
-	INLINE float ATan(float s) { return ATan(Scalar(s)); }
-	INLINE float ATan2(float y, float x) { return ATan2(Scalar(y), Scalar(x)); }
-	INLINE float Lerp(float a, float b, float t) { return a + (b - a) * t; }
-	INLINE float Max(float a, float b) { return a > b ? a : b; }
-	INLINE float Min(float a, float b) { return a < b ? a : b; }
-	INLINE float Clamp(float v, float a, float b) { return Min(Max(v, a), b); }
+			INLINE float Sqrt(float s) { return Sqrt(Scalar(s)); }
+		INLINE float Recip(float s) { return Recip(Scalar(s)); }
+		INLINE float RecipSqrt(float s) { return RecipSqrt(Scalar(s)); }
+		INLINE float Floor(float s) { return Floor(Scalar(s)); }
+		INLINE float Ceiling(float s) { return Ceiling(Scalar(s)); }
+		INLINE float Round(float s) { return Round(Scalar(s)); }
+		INLINE float Abs(float s) { return s < 0.0f ? -s : s; }
+		INLINE float Exp(float s) { return Exp(Scalar(s)); }
+		INLINE float Pow(float b, float e) { return Pow(Scalar(b), Scalar(e)); }
+		INLINE float Log(float s) { return Log(Scalar(s)); }
+		INLINE float Sin(float s) { return Sin(Scalar(s)); }
+		INLINE float Cos(float s) { return Cos(Scalar(s)); }
+		INLINE float Tan(float s) { return Tan(Scalar(s)); }
+		INLINE float ASin(float s) { return ASin(Scalar(s)); }
+		INLINE float ACos(float s) { return ACos(Scalar(s)); }
+		INLINE float ATan(float s) { return ATan(Scalar(s)); }
+		INLINE float ATan2(float y, float x) { return ATan2(Scalar(y), Scalar(x)); }
+		INLINE float Lerp(float a, float b, float t) { return a + (b - a) * t; }
+		INLINE float Max(float a, float b) { return a > b ? a : b; }
+		INLINE float Min(float a, float b) { return a < b ? a : b; }
+		INLINE float Clamp(float v, float a, float b) { return Min(Max(v, a), b); }
 
-	INLINE Vector3 Select(Vector3 lhs, Vector3 rhs, BoolVector mask) { return Vector3(XMVectorSelect(lhs, rhs, mask)); }
-	INLINE Vector4 Select(Vector4 lhs, Vector4 rhs, BoolVector mask) { return Vector4(XMVectorSelect(lhs, rhs, mask)); }
+		INLINE Vector3 Select(Vector3 lhs, Vector3 rhs, BoolVector mask) { return Vector3(XMVectorSelect(lhs, rhs, mask)); }
+		INLINE Vector4 Select(Vector4 lhs, Vector4 rhs, BoolVector mask) { return Vector4(XMVectorSelect(lhs, rhs, mask)); }
 
-	INLINE BoolVector operator<  (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
-	INLINE BoolVector operator<= (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator>  (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
-	INLINE BoolVector operator>= (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator== (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
+		INLINE BoolVector operator<  (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
+		INLINE BoolVector operator<= (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator>  (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
+		INLINE BoolVector operator>= (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator== (Scalar lhs, Scalar rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
 
-	INLINE BoolVector operator<  (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
-	INLINE BoolVector operator<= (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator>  (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
-	INLINE BoolVector operator>= (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator== (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
+		INLINE BoolVector operator<  (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
+		INLINE BoolVector operator<= (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator>  (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
+		INLINE BoolVector operator>= (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator== (Vector3 lhs, Vector3 rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
 
-	INLINE BoolVector operator<  (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
-	INLINE BoolVector operator<= (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator>  (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
-	INLINE BoolVector operator>= (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
-	INLINE BoolVector operator== (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
+		INLINE BoolVector operator<  (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorLess(lhs, rhs)); }
+		INLINE BoolVector operator<= (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorLessOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator>  (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorGreater(lhs, rhs)); }
+		INLINE BoolVector operator>= (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorGreaterOrEqual(lhs, rhs)); }
+		INLINE BoolVector operator== (Vector4 lhs, Vector4 rhs) { return BoolVector(XMVectorEqual(lhs, rhs)); }
 
-	INLINE Matrix4 Transpose(const Matrix4& mat) { return Matrix4(XMMatrixTranspose(mat)); }
-	INLINE Matrix4 Invert(const Matrix4& mat) { return Matrix4(XMMatrixInverse(nullptr, mat)); }
+		INLINE Matrix4 Transpose(const Matrix4& mat) { return Matrix4(XMMatrixTranspose(mat)); }
+		INLINE Matrix4 Invert(const Matrix4& mat) { return Matrix4(XMMatrixInverse(nullptr, mat)); }
 
-	INLINE Quaternion Lerp(const Quaternion& first, const Quaternion& seccond, float delta)
-	{
-		return Quaternion{ DirectX::XMQuaternionSlerp(first, seccond, delta) };
+		INLINE Quaternion Lerp(const Quaternion& first, const Quaternion& seccond, float delta)
+		{
+			return Quaternion{ DirectX::XMQuaternionSlerp(first, seccond, delta) };
+		}
 	}
 }

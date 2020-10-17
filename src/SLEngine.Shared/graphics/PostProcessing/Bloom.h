@@ -1,16 +1,19 @@
 #pragma once
 
-namespace graphics
+namespace sle
 {
-	namespace bloom
+	namespace graphics
 	{
-		void Initialize();
-		void Resize(UINT width, UINT height);
-		void Shutdown();
-		void Render(ID3D11RenderTargetView* const* target);
+		namespace bloom
+		{
+			SLE_EXPORTS void Initialize();
+			SLE_EXPORTS void Resize(UINT width, UINT height);
+			SLE_EXPORTS void Shutdown();
+			SLE_EXPORTS void Render(ID3D11RenderTargetView* const* target);
 
-		extern bool Enable;
-		extern float Exposure;
-		extern Microsoft::WRL::ComPtr<ID3D11RenderTargetView> g_inputRenderTarget;
+			SLE_EXPORTS extern bool Enable;
+			SLE_EXPORTS extern float Exposure;
+			SLE_EXPORTS extern Microsoft::WRL::ComPtr<ID3D11RenderTargetView> g_inputRenderTarget;
+		}
 	}
 }

@@ -5,142 +5,145 @@
 #include "../math/boundingSphere.h"
 #include "../math/boudingBox.h"
 
-class GameObject;
-
-namespace graphics
+namespace sle
 {
-	class MeshRenderer;
+	class GameObject;
 
-	extern std::set<MeshRenderer*> g_activeMeshRenderers;
+	namespace graphics {
+		class MeshRenderer;
 
-	struct Vertex
-	{
-		Vertex() { ZeroMemory(this, sizeof(this)); }
-		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT3& t, const DirectX::XMFLOAT2& uv)
-			: Position(p), Normal(n), TangentU(t), TexUV(uv) {}
-		Vertex(
-			float px, float py, float pz,
-			float nx, float ny, float nz,
-			float tx, float ty, float tz,
-			float u, float v)
-			: Position(px, py, pz), Normal(nx, ny, nz),
-			TangentU(tx, ty, tz), TexUV(u, v) {}
+		SLE_EXPORTS extern std::set<MeshRenderer*> g_activeMeshRenderers;
 
-		DirectX::XMFLOAT3 Position;
-		DirectX::XMFLOAT3 Normal;
-		DirectX::XMFLOAT3 TangentU;
-		DirectX::XMFLOAT2 TexUV;
-	};
-
-	struct MeshData
-	{
-		std::vector<Vertex> Vertices;
-		std::vector<UINT> Indices;
-
-		math::BoudingBox BoudingBox;
-
-		///<summary>
-		/// Creates a box centered at the origin with the given dimensions.
-		///</summary>
-		static void CreateBox(float width, float height, float depth, MeshData& meshData);
-
-		///<summary>
-		/// Creates a sphere centered at the origin with the given radius.  The
-		/// slices and stacks parameters control the degree of tessellation.
-		///</summary>
-		static void CreateSphere(float radius, UINT sliceCount, UINT stackCount, MeshData& meshData);
-
-		///<summary>
-		/// Creates a cylinder parallel to the y-axis, and centered about the origin.
-		/// The bottom and top radius can vary to form various cone shapes rather than true
-		// cylinders.  The slices and stacks parameters control the degree of tessellation.
-		///</summary>
-		static void CreateCylinder(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData);
-
-		///<summary>
-		/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
-		/// at the origin with the specified width and depth.
-		///</summary>
-		static void CreateGrid(float width, float depth, UINT m, UINT n, MeshData& meshData);
-
-		static void LoadFromOBJFile(const wchar_t* filename, MeshData& meshData);
-	};
-
-	class MeshRenderer
-	{
-	public:
-		MeshRenderer(GameObject* gameObject, MeshData* data, Material material);
-		~MeshRenderer();
-
-		void SetMaterial(Material material) { m_material = material; }
-		void SetMesh(MeshData* data) { m_meshData = data; };
-
-		inline math::BoudingBox WBoudingBox() const
+		struct Vertex
 		{
-			return GetWorldMatrix() * m_meshData->BoudingBox;
-		}
+			Vertex() { ZeroMemory(this, sizeof(this)); }
+			Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT3& t, const DirectX::XMFLOAT2& uv)
+				: Position(p), Normal(n), TangentU(t), TexUV(uv) {}
+			Vertex(
+				float px, float py, float pz,
+				float nx, float ny, float nz,
+				float tx, float ty, float tz,
+				float u, float v)
+				: Position(px, py, pz), Normal(nx, ny, nz),
+				TangentU(tx, ty, tz), TexUV(u, v) {}
 
-		void SetAlbedoTexture(Texture2D* texture)
+			DirectX::XMFLOAT3 Position;
+			DirectX::XMFLOAT3 Normal;
+			DirectX::XMFLOAT3 TangentU;
+			DirectX::XMFLOAT2 TexUV;
+		};
+
+		struct MeshData
 		{
-			m_albedoTexture = texture;
-		}
+			std::vector<Vertex> Vertices;
+			std::vector<UINT> Indices;
 
-		void SetNormalMap(Texture2D* normalMap)
+			math::BoudingBox BoudingBox;
+
+			///<summary>
+			/// Creates a box centered at the origin with the given dimensions.
+			///</summary>
+			SLE_EXPORTS static void CreateBox(float width, float height, float depth, MeshData& meshData);
+
+			///<summary>
+			/// Creates a sphere centered at the origin with the given radius.  The
+			/// slices and stacks parameters control the degree of tessellation.
+			///</summary>
+			SLE_EXPORTS static void CreateSphere(float radius, UINT sliceCount, UINT stackCount, MeshData& meshData);
+
+			///<summary>
+			/// Creates a cylinder parallel to the y-axis, and centered about the origin.
+			/// The bottom and top radius can vary to form various cone shapes rather than true
+			// cylinders.  The slices and stacks parameters control the degree of tessellation.
+			///</summary>
+			SLE_EXPORTS static void CreateCylinder(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData);
+
+			///<summary>
+			/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
+			/// at the origin with the specified width and depth.
+			///</summary>
+			SLE_EXPORTS static void CreateGrid(float width, float depth, UINT m, UINT n, MeshData& meshData);
+
+			SLE_EXPORTS static void LoadFromOBJFile(const wchar_t* filename, MeshData& meshData);
+		};
+
+		class MeshRenderer
 		{
-			m_normalMap = normalMap;
-		}
+		public:
+			SLE_EXPORTS MeshRenderer(GameObject& gameObject, MeshData* data, Material material);
+			SLE_EXPORTS ~MeshRenderer();
+			SLE_EXPORTS math::Matrix4 GetWorldMatrix() const;
 
-		void SetEmissionMap(Texture2D* emissionMap)
-		{
-			m_emissionTexture = emissionMap;
-		}
+			void SetMaterial(Material material) { m_material = material; }
+			void SetMesh(MeshData* data) { m_meshData = data; };
 
-		void SetTextureDisplacement(float x, float y)
-		{
-			m_textureDisplacement = { x, y };
-		}
+			inline math::BoudingBox WBoudingBox() const
+			{
+				return GetWorldMatrix() * m_meshData->BoudingBox;
+			}
 
-		void SetTextureScale(float x, float y)
-		{
-			m_textureScale = { x, y };
-		}
+			void SetAlbedoTexture(Texture2D texture)
+			{
+				m_albedoTexture = texture;
+			}
 
-		void SetEmission(DirectX::XMFLOAT4 emission)
-		{
-			m_material.Emission = emission;
-		}
+			void SetNormalMap(Texture2D normalMap)
+			{
+				m_normalMap = normalMap;
+			}
 
-		math::Matrix4 GetWorldMatrix() const;
+			void SetEmissionMap(Texture2D emissionMap)
+			{
+				m_emissionTexture = emissionMap;
+			}
 
-		const math::Vector3 GetRightVec() const
-		{
-			return math::Matrix3{ GetWorldMatrix() }.GetX();
-		}
-		const math::Vector3 GetUpVec() const
-		{
-			return math::Matrix3{ GetWorldMatrix() }.GetY();
-		}
-		const math::Vector3 GetForwardVec() const
-		{
-			return -math::Matrix3{ GetWorldMatrix() }.GetZ();
-		}
+			void SetTextureDisplacement(float x, float y)
+			{
+				m_textureDisplacement = { x, y };
+			}
 
-	private:
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer = nullptr;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer = nullptr;
+			void SetTextureScale(float x, float y)
+			{
+				m_textureScale = { x, y };
+			}
 
-		Material m_material;
-		MeshData* m_meshData;
+			void SetEmission(DirectX::XMFLOAT4 emission)
+			{
+				m_material.Emission = emission;
+			}
 
-		Texture2D* m_albedoTexture;
-		Texture2D* m_normalMap;
-		Texture2D* m_emissionTexture;
+			const math::Vector3 GetRightVec() const
+			{
+				return math::Matrix3{ GetWorldMatrix() }.GetX();
+			}
 
-		DirectX::XMFLOAT2 m_textureScale{ 1, 1 };
-		DirectX::XMFLOAT2 m_textureDisplacement{ 0, 0 };
+			const math::Vector3 GetUpVec() const
+			{
+				return math::Matrix3{ GetWorldMatrix() }.GetY();
+			}
 
-		GameObject* m_gameObject;
+			const math::Vector3 GetForwardVec() const
+			{
+				return -math::Matrix3{ GetWorldMatrix() }.GetZ();
+			}
 
-		friend RenderPipeline;
-	};
+		private:
+			Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer = nullptr;
+			Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer = nullptr;
+
+			Material m_material;
+			MeshData* m_meshData = nullptr;
+
+			Texture2D m_albedoTexture;
+			Texture2D m_normalMap;
+			Texture2D m_emissionTexture;
+
+			DirectX::XMFLOAT2 m_textureScale{ 1, 1 };
+			DirectX::XMFLOAT2 m_textureDisplacement{ 0, 0 };
+
+			GameObject& m_gameObject;
+
+			friend RenderPipeline;
+		};
+	}
 }

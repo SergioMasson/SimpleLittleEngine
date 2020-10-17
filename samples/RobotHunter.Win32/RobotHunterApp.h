@@ -12,15 +12,18 @@
 #include "graphics/UI/guiPanel.h"
 #include "graphics/UI/guiSprite.h"
 
-namespace graphics
+namespace sle
 {
-	class RenderPipeline;
-	struct MeshData;
-	class MeshRenderer;
-	class Material;
+	namespace graphics
+	{
+		class RenderPipeline;
+		struct MeshData;
+		class MeshRenderer;
+		class Material;
+	}
 }
 
-class RobotHunterApp : public IGameApp
+class RobotHunterApp : public sle::IGameApp
 {
 public:
 	virtual void Startup(void) override;
@@ -34,28 +37,27 @@ public:
 
 private:
 
-	std::unique_ptr<graphics::RenderPipeline> m_renderPipeline;
-	std::vector<graphics::MeshRenderer*> m_sceneMeshRenderer;
-	std::vector<graphics::UI::DrawableElement*> m_sceneGuiElements;
-	std::vector<GameObject*> m_enemiesLeft;
-	std::vector<graphics::MeshRenderer*> m_pilars;
+	std::unique_ptr<sle::graphics::RenderPipeline> m_renderPipeline;
+	std::vector<sle::graphics::MeshRenderer*> m_sceneMeshRenderer;
+	std::vector<sle::graphics::UI::DrawableElement*> m_sceneGuiElements;
+	std::vector<sle::GameObject*> m_enemiesLeft;
+	std::vector<sle::graphics::MeshRenderer*> m_pilars;
 
-	graphics::UI::GuiText* m_informationText;
-	graphics::UI::GuiText* m_counterText;
-	graphics::UI::GuiText* m_enemiesLeftText;
+	sle::graphics::UI::GuiText* m_informationText;
+	sle::graphics::UI::GuiText* m_counterText;
+	sle::graphics::UI::GuiText* m_enemiesLeftText;
 
 	float m_time{ 0 };
 	uint32_t enemiesLeft;
 
-	GameObject* m_player;
-	GameObject* m_floor;
-	GameObject* m_trophy;
+	sle::GameObject m_player;
+	sle::GameObject m_floor;
+	sle::GameObject m_trophy;
+	sle::GameObject m_scenePointLight;
+	sle::GameObject m_sceneSpotLight;
 
-	GameObject* m_scenePointLight;
-	GameObject* m_sceneSpotLight;
-
-	graphics::Texture2D* m_skybox;
-	math::Vector3 mouse_position;
+	sle::graphics::Texture2D m_skybox;
+	sle::math::Vector3 mouse_position;
 	bool m_isDone = false;
 	bool m_firstFrame = true;
 
@@ -63,8 +65,8 @@ private:
 	void CreateCamera();
 	void CreateLights();
 	void CreateObjects();
-	void CreateEnemy(graphics::MeshData* enemyData, graphics::Texture2D* enemyTexture, graphics::Texture2D* enemyNormal, graphics::Texture2D* detectedTexture, graphics::Texture2D* emissionMap);
-	void CreatePilars(graphics::MeshData* pilarData, graphics::Texture2D* pilarTexture, graphics::Texture2D* pilarNormal, graphics::Texture2D* emissionMap);
+	void CreateEnemy(sle::graphics::MeshData* enemyData, sle::graphics::Texture2D& enemyTexture, sle::graphics::Texture2D& enemyNormal, sle::graphics::Texture2D& detectedTexture, sle::graphics::Texture2D& emissionMap);
+	void CreatePilars(sle::graphics::MeshData* pilarData, sle::graphics::Texture2D& pilarTexture, sle::graphics::Texture2D& pilarNormal, sle::graphics::Texture2D& emissionMap);
 	void CreateGUI();
 	void CheckForEnemyCollision();
 	bool CheckIfInsideScene();

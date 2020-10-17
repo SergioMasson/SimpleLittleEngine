@@ -5,20 +5,19 @@
 #include "camera.h"
 #include "gameObject.h"
 
-class PlayerControllerPhysics : public BehaviourComponent
+class PlayerControllerPhysics : public sle::BehaviourComponent
 {
 public:
-	PlayerControllerPhysics(GameObject* gameObject, math::Vector3 worldUp);
+	PlayerControllerPhysics(sle::GameObject& gameObject, sle::math::Vector3 worldUp);
 	void Update(float deltaT) override;
 	void FixedUpdate(float deltaT) override;
 
 private:
-	physics::RigidBody* m_PlayerRigidBody;
-
-	math::Vector3 m_WorldUp;
-	math::Vector3 m_WorldNorth;
-	math::Vector3 m_WorldEast;
-	math::Vector3 m_cameraOffset;
+	sle::physics::RigidBody* m_PlayerRigidBody;
+	sle::math::Vector3 m_WorldUp;
+	sle::math::Vector3 m_WorldNorth;
+	sle::math::Vector3 m_WorldEast;
+	sle::math::Vector3 m_cameraOffset;
 
 	float m_MoveSpeed;
 	float m_RotationSpeed;

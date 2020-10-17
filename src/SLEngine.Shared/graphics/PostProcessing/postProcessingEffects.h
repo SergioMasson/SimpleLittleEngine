@@ -1,14 +1,17 @@
 #pragma once
 
-namespace graphics
+namespace sle
 {
-	namespace PostEffects
+	namespace graphics
 	{
-		void Initialize();
-		void Render();
-		void Resize(UINT width, UINT height);
-		void Shutdown();
+		namespace postEffects
+		{
+			SLE_EXPORTS void Initialize();
+			SLE_EXPORTS void Render();
+			SLE_EXPORTS void Resize(UINT width, UINT height);
+			SLE_EXPORTS void Shutdown();
 
-		ID3D11RenderTargetView** GetInitialRenderTarget();
+			SLE_EXPORTS ID3D11RenderTargetView** GetInitialRenderTarget();
+		}
 	}
 }

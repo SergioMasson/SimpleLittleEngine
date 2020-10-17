@@ -18,7 +18,9 @@ LONG defaultHeight = 720;
 int64_t previewsFrameTick = 0;
 int64_t initialTick = 0;
 
-HWND g_coreWindow;
+using namespace sle;
+
+HWND sle::g_coreWindow;
 
 IGameApp* g_currentApp;
 
@@ -26,7 +28,7 @@ void InitializeApplication(IGameApp& app)
 {
 	graphics::Initialize(defaultWidth, defaultHeight);
 	audio::Initialize();
-	SystemTime::Initialize();
+	time::Initialize();
 	Input::Initialize();
 	physics::Initialize();
 
@@ -35,9 +37,9 @@ void InitializeApplication(IGameApp& app)
 
 bool UpdateApplication(IGameApp& app)
 {
-	auto currentTick = SystemTime::GetCurrentTick();
-	float deltaTime = static_cast<float>(SystemTime::TimeBetweenTicks(previewsFrameTick, currentTick));
-	float totalTIme = static_cast<float>(SystemTime::TimeBetweenTicks(initialTick, currentTick));
+	auto currentTick = time::GetCurrentTick();
+	float deltaTime = static_cast<float>(time::TimeBetweenTicks(previewsFrameTick, currentTick));
+	float totalTIme = static_cast<float>(time::TimeBetweenTicks(initialTick, currentTick));
 
 	previewsFrameTick = currentTick;
 
@@ -57,7 +59,7 @@ bool UpdateApplication(IGameApp& app)
 	graphics::BeginDraw();
 	app.RenderScene();
 
-	graphics::PostEffects::Render();
+	graphics::postEffects::Render();
 
 	app.RenderUI();
 	graphics::Present();
@@ -78,7 +80,7 @@ void TerminateApplication(IGameApp& app)
 }
 
 //Creates the window and manages the lifetime of the application.
-void RunApplication(IGameApp& app, HINSTANCE instance, const wchar_t* className)
+void sle::RunApplication(IGameApp& app, HINSTANCE instance, const wchar_t* className)
 {
 	// Register class
 	WNDCLASSEX wcex;
@@ -111,7 +113,7 @@ void RunApplication(IGameApp& app, HINSTANCE instance, const wchar_t* className)
 
 	ShowWindow(g_coreWindow, SW_SHOWDEFAULT);
 
-	initialTick = SystemTime::GetCurrentTick();
+	initialTick = time::GetCurrentTick();
 
 	do
 	{

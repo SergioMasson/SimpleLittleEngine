@@ -3,22 +3,23 @@
 #include "drawableElement.h"
 #include "../../colors.h"
 
-namespace graphics
-{
-	namespace UI
+namespace sle {
+	namespace graphics
 	{
-		class GuiPanel : public DrawableElement
+		namespace UI
 		{
-		public:
-			GuiPanel(DrawableElement* parent, float x, float y, float width, float height);
-			virtual void Draw(void) override;
+			class GuiPanel : public DrawableElement
+			{
+			public:
+				SLE_EXPORTS GuiPanel(DrawableElement* parent, float x, float y, float width, float height);
+				SLE_EXPORTS virtual void Draw(void) override;
+				SLE_EXPORTS void SetColor(Color color);
+				SLE_EXPORTS Color GetColor() const;
 
-			void SetColor(Color color);
-			Color GetColor() const { return m_color; };
-
-		private:
-			Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> m_brush = nullptr;
-			Color m_color;
-		};
+			private:
+				Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> m_brush = nullptr;
+				Color m_color;
+			};
+		}
 	}
 }

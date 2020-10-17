@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "audioCore.h"
 
+using namespace sle;
 using namespace Microsoft::WRL;
 
 static ComPtr<IXAudio2> g_audioInstance{ nullptr };

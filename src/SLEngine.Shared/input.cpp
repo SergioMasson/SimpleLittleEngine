@@ -9,6 +9,8 @@
 #include <XInput.h>
 #pragma comment(lib, "xinput9_1_0.lib")
 
+using namespace sle;
+
 //Buffer for all buttons.
 static bool s_Buttons[2][(int)KeyCode::NumDigitalInputs];
 

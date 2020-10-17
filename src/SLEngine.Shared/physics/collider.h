@@ -2,17 +2,19 @@
 
 #include "../mathHelpers.h"
 
-namespace physics
-{
-	class Collider
+namespace sle {
+	namespace physics
 	{
-	public:
-		bool IsActive() const { return m_isActive; };
-		void SetActive(bool isActive) { m_isActive = isActive; };
-		void SetLocalPosition(math::Vector3 localPosition);
-		void SetLocalRotation(math::Quaternion localRotation);
+		class SLE_EXPORTS Collider
+		{
+		public:
+			bool IsActive() const { return m_isActive; };
+			void SetActive(bool isActive) { m_isActive = isActive; };
+			void SetLocalPosition(math::Vector3 localPosition);
+			void SetLocalRotation(math::Quaternion localRotation);
 
-	private:
-		bool m_isActive;
-	};
+		private:
+			bool m_isActive;
+		};
+	}
 }

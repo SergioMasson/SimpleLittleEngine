@@ -3,7 +3,8 @@
 #include "graphics/coreGraphics.h"
 
 using namespace DirectX;
-using namespace math;
+using namespace sle;
+using namespace sle::math;
 
 static Camera* g_mainCamera;
 

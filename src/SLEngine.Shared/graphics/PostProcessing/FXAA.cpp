@@ -6,6 +6,8 @@
 #include "FXAA_PS.h"
 #include "FXAA_VS.h"
 
+using namespace sle;
+
 struct CB_FXAA
 {
 	DirectX::XMFLOAT4 m_fxaa;
@@ -17,7 +19,7 @@ Microsoft::WRL::ComPtr<ID3D11PixelShader> g_pPixelShaderFXAA = NULL;
 
 //Texture where the scene should be rendered in order to perform FXAA
 Microsoft::WRL::ComPtr<ID3D11Texture2D> g_pProxyTexture = NULL;
-Microsoft::WRL::ComPtr<ID3D11RenderTargetView> graphics::FXAA::g_pProxyTextureRTV = NULL;
+Microsoft::WRL::ComPtr<ID3D11RenderTargetView> graphics::fxaa::g_pProxyTextureRTV = NULL;
 Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> g_pProxyTextureSRV = NULL;
 
 Microsoft::WRL::ComPtr<ID3D11SamplerState> g_pSamPointMirror = NULL;
@@ -31,7 +33,7 @@ Microsoft::WRL::ComPtr <ID3D11BlendState> g_pColorWritesOff = NULL;
 Microsoft::WRL::ComPtr <ID3D11RasterizerState> g_pCullBack = NULL;
 Microsoft::WRL::ComPtr <ID3D11RasterizerState > g_pCullFront = NULL;
 
-bool graphics::FXAA::FXAAEnable = true;
+bool graphics::fxaa::FXAAEnable = true;
 
 void CreateRasterazerStates()
 {
@@ -144,7 +146,7 @@ void FxaaIntegrateResource(UINT width, UINT height)
 
 	ASSERT_SUCCEEDED(hr);
 
-	hr = graphics::g_d3dDevice->CreateRenderTargetView(g_pProxyTexture.Get(), 0, graphics::FXAA::g_pProxyTextureRTV.GetAddressOf());
+	hr = graphics::g_d3dDevice->CreateRenderTargetView(g_pProxyTexture.Get(), 0, graphics::fxaa::g_pProxyTextureRTV.GetAddressOf());
 
 	ASSERT_SUCCEEDED(hr);
 
@@ -153,7 +155,7 @@ void FxaaIntegrateResource(UINT width, UINT height)
 	ASSERT_SUCCEEDED(hr);
 }
 
-void graphics::FXAA::Initialize()
+void graphics::fxaa::Initialize()
 {
 	CreateFXAAConstBuffer();
 	CreateFXAAShaders();
@@ -161,7 +163,7 @@ void graphics::FXAA::Initialize()
 	CreateRasterazerStates();
 }
 
-void graphics::FXAA::Resize(UINT width, UINT height)
+void graphics::fxaa::Resize(UINT width, UINT height)
 {
 	if (g_pProxyTexture != nullptr)
 		g_pProxyTexture.Reset();
@@ -186,7 +188,7 @@ void graphics::FXAA::Resize(UINT width, UINT height)
 	graphics::g_d3dImmediateContext->Unmap(g_pcbFXAA.Get(), 0);
 }
 
-void graphics::FXAA::Shutdown()
+void graphics::fxaa::Shutdown()
 {
 	g_pcbFXAA.Reset();
 	g_pProxyTexture.Reset();
@@ -196,7 +198,7 @@ void graphics::FXAA::Shutdown()
 	g_pPixelShaderFXAA.Reset();
 }
 
-void graphics::FXAA::Render(ID3D11RenderTargetView* const* target)
+void graphics::fxaa::Render(ID3D11RenderTargetView* const* target)
 {
 	ID3D11SamplerState* ppSamplerStates[4] = { g_pSamPointMirror.Get(), g_pSamLinearWrap.Get(), g_pSamPointCmpClamp.Get(), g_pSamAni.Get() };
 	graphics::g_d3dImmediateContext->PSSetSamplers(0, 4, ppSamplerStates);

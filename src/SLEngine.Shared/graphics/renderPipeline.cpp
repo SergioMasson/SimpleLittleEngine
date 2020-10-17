@@ -8,6 +8,8 @@
 
 #define MAX_LIGHTS 10
 
+using namespace sle;
+
 struct SkyboxConstBuffer
 {
 	DirectX::XMFLOAT4X4 MVP;
@@ -166,11 +168,11 @@ void graphics::RenderPipeline::RenderMesh(MeshRenderer const& mesh)
 	graphics::g_d3dImmediateContext->VSSetConstantBuffers(0, 1, m_objectConstBuffer.GetAddressOf());
 	graphics::g_d3dImmediateContext->PSSetConstantBuffers(0, 1, m_objectConstBuffer.GetAddressOf());
 
-	graphics::g_d3dImmediateContext->PSSetShaderResources(0, 1, mesh.m_albedoTexture->m_resourceView.GetAddressOf());
-	graphics::g_d3dImmediateContext->PSSetShaderResources(1, 1, mesh.m_normalMap->m_resourceView.GetAddressOf());
-	graphics::g_d3dImmediateContext->PSSetShaderResources(2, 1, mesh.m_emissionTexture->m_resourceView.GetAddressOf());
+	graphics::g_d3dImmediateContext->PSSetShaderResources(0, 1, mesh.m_albedoTexture.m_resourceView.GetAddressOf());
+	graphics::g_d3dImmediateContext->PSSetShaderResources(1, 1, mesh.m_normalMap.m_resourceView.GetAddressOf());
+	graphics::g_d3dImmediateContext->PSSetShaderResources(2, 1, mesh.m_emissionTexture.m_resourceView.GetAddressOf());
 
-	graphics::g_d3dImmediateContext->PSSetSamplers(0, 1, mesh.m_albedoTexture->m_samplerState.GetAddressOf());
+	graphics::g_d3dImmediateContext->PSSetSamplers(0, 1, mesh.m_albedoTexture.m_samplerState.GetAddressOf());
 
 	//Binds vertex buffer and index buffer.
 	graphics::g_d3dImmediateContext->IASetVertexBuffers(0, 1, mesh.m_vertexBuffer.GetAddressOf(), &stride, &offset);

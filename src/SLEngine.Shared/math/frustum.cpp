@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "frustum.h"
 
-using namespace math;
+using namespace sle::math;
 
 void Frustum::ConstructPerspectiveFrustum(float HTan, float VTan, float NearClip, float FarClip)
 {
