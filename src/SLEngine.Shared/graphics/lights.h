@@ -88,14 +88,14 @@ namespace sle
 
 	class LightComponent;
 
-	SLE_EXPORTS extern std::set<LightComponent*> g_activeLights;
+	extern std::set<LightComponent*> g_activeLights;
 
 	class LightComponent : public Component
 	{
 	public:
-		SLE_EXPORTS LightComponent(GameObject& gameObject, Color Color, LightType type, float intensity, float range = 1.0, float spot = 1.0);
-		SLE_EXPORTS ~LightComponent();
-		SLE_EXPORTS LightData GetData();
+		LightComponent(GameObject& gameObject, Color Color, LightType type, float intensity, float range = 1.0, float spot = 1.0);
+		~LightComponent();
+		LightData GetData();
 
 		void SetIntensity(float intensity) {
 			m_intensity = intensity;

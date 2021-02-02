@@ -14,7 +14,7 @@ namespace sle {
 				Center
 			};
 
-			class SLE_EXPORTS DrawableElement
+			class  DrawableElement
 			{
 			public:
 				DrawableElement() {};

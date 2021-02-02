@@ -15,12 +15,12 @@ namespace sle
 		class RenderPipeline
 		{
 		public:
-			SLE_EXPORTS RenderPipeline();
-			SLE_EXPORTS ~RenderPipeline();
-			SLE_EXPORTS void LoadShader(const BYTE* vertexShader, SIZE_T vertexShaderSize, const BYTE* pixelShader, SIZE_T pixelShaderSize);
-			SLE_EXPORTS void StartRender(Camera* camera);
-			SLE_EXPORTS void RenderMesh(MeshRenderer const& mesh);
-			SLE_EXPORTS void SetSkyboxTexture(Texture2D* skybox) { m_skyboxTexture = skybox; };
+			RenderPipeline();
+			~RenderPipeline();
+			void LoadShader(const BYTE* vertexShader, SIZE_T vertexShaderSize, const BYTE* pixelShader, SIZE_T pixelShaderSize);
+			void StartRender(Camera* camera);
+			void RenderMesh(MeshRenderer const& mesh);
+			void SetSkyboxTexture(Texture2D* skybox) { m_skyboxTexture = skybox; };
 
 		private:
 			Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader = nullptr;
@@ -42,8 +42,8 @@ namespace sle
 
 			Camera* m_camera;
 		private:
-			SLE_EXPORTS void CreateSkybox();
-			SLE_EXPORTS void RenderSkybox(Camera* camera);
+			void CreateSkybox();
+			void RenderSkybox(Camera* camera);
 		};
 	}
 }

@@ -20,17 +20,17 @@ namespace sle
 		class RigidBody;
 	}
 
-	SLE_EXPORTS extern std::set<BehaviourComponent*> g_activeBehaviours;
-	SLE_EXPORTS extern std::set<GameObject*> g_activeGameObjects;
+	extern std::set<BehaviourComponent*> g_activeBehaviours;
+	extern std::set<GameObject*> g_activeGameObjects;
 
 	class  GameObject
 	{
 	public:
-		SLE_EXPORTS GameObject(math::Vector3 position = math::Vector3(0, 0, 0), math::Quaternion rotation = math::Quaternion(0, 0, 0), GameObject* parent = nullptr, std::wstring name = L"Default");
-		SLE_EXPORTS ~GameObject();
-		SLE_EXPORTS GameObject(const GameObject&) = delete;
-		SLE_EXPORTS GameObject(GameObject&&) = delete;
-		SLE_EXPORTS GameObject& operator=(const GameObject&) = delete;
+		GameObject(math::Vector3 position = math::Vector3(0, 0, 0), math::Quaternion rotation = math::Quaternion(0, 0, 0), GameObject* parent = nullptr, std::wstring name = L"Default");
+		~GameObject();
+		GameObject(const GameObject&) = delete;
+		GameObject(GameObject&&) = delete;
+		GameObject& operator=(const GameObject&) = delete;
 
 		template<typename T, typename ...Param> T* AddComponent(Param... params)
 		{
@@ -75,26 +75,26 @@ namespace sle
 		bool IsActive() { return m_isActive; }
 		void SetActive(bool active) { m_isActive = active; }
 
-		SLE_EXPORTS math::Vector3 GetLocalPosition() const;
-		SLE_EXPORTS math::Vector3 GetPosition() const;
+		math::Vector3 GetLocalPosition() const;
+		math::Vector3 GetPosition() const;
 
-		SLE_EXPORTS math::Quaternion GetLocalRotation() const;
-		SLE_EXPORTS math::Quaternion GetRotation() const;
+		math::Quaternion GetLocalRotation() const;
+		math::Quaternion GetRotation() const;
 
-		SLE_EXPORTS math::Transform GetTransform() const;
-		SLE_EXPORTS math::Transform GetLocalTransform() const;
+		math::Transform GetTransform() const;
+		math::Transform GetLocalTransform() const;
 
 		void SetName(std::wstring name) { m_name = name; }
 		std::wstring const& GetName() const { return m_name; };
 
-		SLE_EXPORTS void SetParent(GameObject* parent);
-		SLE_EXPORTS void SetPosition(math::Vector3 position);
-		SLE_EXPORTS void SetRotation(math::Quaternion rotation);
-		SLE_EXPORTS void SetScale(math::Vector3 scale);
+		void SetParent(GameObject* parent);
+		void SetPosition(math::Vector3 position);
+		void SetRotation(math::Quaternion rotation);
+		void SetScale(math::Vector3 scale);
 
-		SLE_EXPORTS void NotifyCollision(physics::RigidBody* other);
+		void NotifyCollision(physics::RigidBody* other);
 
-		SLE_EXPORTS graphics::MeshRenderer* AddMeshRenderer(graphics::MeshData* data, graphics::Material material);
+		graphics::MeshRenderer* AddMeshRenderer(graphics::MeshData* data, graphics::Material material);
 		graphics::MeshRenderer* GetMeshRenderer()
 		{
 			return m_meshRenderer;
@@ -114,7 +114,7 @@ namespace sle
 		bool m_isActive;
 	};
 
-	class SLE_EXPORTS Component
+	class  Component
 	{
 	public:
 		GameObject& GetGameObject() { return m_gameObject; }
@@ -136,7 +136,7 @@ namespace sle
 		friend GameObject;
 	};
 
-	class SLE_EXPORTS BehaviourComponent : public Component
+	class  BehaviourComponent : public Component
 	{
 	public:
 		BehaviourComponent(GameObject& gameObject) : Component(gameObject)

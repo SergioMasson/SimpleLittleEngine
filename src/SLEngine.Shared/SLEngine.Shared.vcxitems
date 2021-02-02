@@ -94,7 +94,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)physics\rigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)sle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)systemTime.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)types_c.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)shaders\BoxPS.hlsl">

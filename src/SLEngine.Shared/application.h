@@ -2,7 +2,7 @@
 
 namespace sle
 {
-	class SLE_EXPORTS IGameApp
+	class  IGameApp
 	{
 	public:
 		// This function can be used to initialize application state and will run after essential
@@ -32,7 +32,7 @@ namespace sle
 		virtual ~IGameApp() {};
 	};
 
-	SLE_EXPORTS extern HWND g_coreWindow;
+	extern HWND g_coreWindow;
 
-	SLE_EXPORTS void RunApplication(IGameApp& app, HINSTANCE instance, const wchar_t* className);
+	void RunApplication(IGameApp& app, HINSTANCE instance, const wchar_t* className);
 }

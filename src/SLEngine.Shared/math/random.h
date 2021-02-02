@@ -64,6 +64,6 @@ namespace sle
 			std::minstd_rand m_gen;
 		};
 
-		SLE_EXPORTS extern RandomNumberGenerator g_RNG;
+		extern RandomNumberGenerator g_RNG;
 	};
 }

@@ -5,7 +5,7 @@
 namespace sle {
 	namespace graphics
 	{
-		class SLE_EXPORTS GraphicsContext
+		class GraphicsContext
 		{
 		public:
 			void SetRenderTargets(UINT NumRTVs, ID3D11RenderTargetView* const*);

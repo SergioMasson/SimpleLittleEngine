@@ -2,10 +2,11 @@
 
 #include "../mathHelpers.h"
 
-namespace sle {
+namespace sle
+{
 	namespace physics
 	{
-		class SLE_EXPORTS Collider
+		class  Collider
 		{
 		public:
 			bool IsActive() const { return m_isActive; };

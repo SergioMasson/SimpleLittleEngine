@@ -9,10 +9,11 @@ namespace sle
 {
 	class GameObject;
 
-	namespace graphics {
+	namespace graphics
+	{
 		class MeshRenderer;
 
-		SLE_EXPORTS extern std::set<MeshRenderer*> g_activeMeshRenderers;
+		extern std::set<MeshRenderer*> g_activeMeshRenderers;
 
 		struct Vertex
 		{
@@ -43,36 +44,36 @@ namespace sle
 			///<summary>
 			/// Creates a box centered at the origin with the given dimensions.
 			///</summary>
-			SLE_EXPORTS static void CreateBox(float width, float height, float depth, MeshData& meshData);
+			static void CreateBox(float width, float height, float depth, MeshData& meshData);
 
 			///<summary>
 			/// Creates a sphere centered at the origin with the given radius.  The
 			/// slices and stacks parameters control the degree of tessellation.
 			///</summary>
-			SLE_EXPORTS static void CreateSphere(float radius, UINT sliceCount, UINT stackCount, MeshData& meshData);
+			static void CreateSphere(float radius, UINT sliceCount, UINT stackCount, MeshData& meshData);
 
 			///<summary>
 			/// Creates a cylinder parallel to the y-axis, and centered about the origin.
 			/// The bottom and top radius can vary to form various cone shapes rather than true
 			// cylinders.  The slices and stacks parameters control the degree of tessellation.
 			///</summary>
-			SLE_EXPORTS static void CreateCylinder(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData);
+			static void CreateCylinder(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData);
 
 			///<summary>
 			/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
 			/// at the origin with the specified width and depth.
 			///</summary>
-			SLE_EXPORTS static void CreateGrid(float width, float depth, UINT m, UINT n, MeshData& meshData);
+			static void CreateGrid(float width, float depth, UINT m, UINT n, MeshData& meshData);
 
-			SLE_EXPORTS static void LoadFromOBJFile(const wchar_t* filename, MeshData& meshData);
+			static void LoadFromOBJFile(const wchar_t* filename, MeshData& meshData);
 		};
 
 		class MeshRenderer
 		{
 		public:
-			SLE_EXPORTS MeshRenderer(GameObject& gameObject, MeshData* data, Material material);
-			SLE_EXPORTS ~MeshRenderer();
-			SLE_EXPORTS math::Matrix4 GetWorldMatrix() const;
+			MeshRenderer(GameObject& gameObject, MeshData* data, Material material);
+			~MeshRenderer();
+			math::Matrix4 GetWorldMatrix() const;
 
 			void SetMaterial(Material material) { m_material = material; }
 			void SetMesh(MeshData* data) { m_meshData = data; };

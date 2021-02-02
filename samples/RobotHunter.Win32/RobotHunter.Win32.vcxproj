@@ -75,24 +75,28 @@
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>RobotHunter</TargetName>
+    <LibraryPath>$(SolutionDir)3rdparty\physx4.1.1\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>RobotHunter</TargetName>
+    <LibraryPath>$(SolutionDir)3rdparty\physx4.1.1\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>RobotHunter</TargetName>
+    <LibraryPath>$(SolutionDir)3rdparty\physx4.1.1\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>RobotHunter</TargetName>
+    <LibraryPath>$(SolutionDir)3rdparty\physx4.1.1\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <VcpkgEnabled>false</VcpkgEnabled>

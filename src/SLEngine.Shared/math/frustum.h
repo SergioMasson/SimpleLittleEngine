@@ -13,7 +13,7 @@ namespace sle
 		public:
 			Frustum() {}
 
-			SLE_EXPORTS Frustum(const Matrix4& ProjectionMatrix);
+			Frustum(const Matrix4& ProjectionMatrix);
 
 			enum CornerID
 			{
@@ -102,10 +102,10 @@ namespace sle
 		private:
 
 			// Perspective frustum constructor (for pyramid-shaped frusta)
-			SLE_EXPORTS void ConstructPerspectiveFrustum(float HTan, float VTan, float NearClip, float FarClip);
+			void ConstructPerspectiveFrustum(float HTan, float VTan, float NearClip, float FarClip);
 
 			// Orthographic frustum constructor (for box-shaped frusta)
-			SLE_EXPORTS void ConstructOrthographicFrustum(float Left, float Right, float Top, float Bottom, float NearClip, float FarClip);
+			void ConstructOrthographicFrustum(float Left, float Right, float Top, float Bottom, float NearClip, float FarClip);
 
 			Vector3 m_FrustumCorners[8];        // the corners of the frustum
 			BoundingPlane m_FrustumPlanes[6];            // the bounding planes

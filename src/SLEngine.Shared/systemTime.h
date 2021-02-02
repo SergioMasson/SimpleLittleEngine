@@ -4,15 +4,15 @@ namespace sle
 {
 	namespace time
 	{
-		SLE_EXPORTS extern double sm_CpuTickDelta;
+		extern double sm_CpuTickDelta;
 
 		// Query the performance counter frequency
-		SLE_EXPORTS void Initialize(void);
+		void Initialize(void);
 
 		// Query the current value of the performance counter
-		SLE_EXPORTS int64_t GetCurrentTick(void);
+		int64_t GetCurrentTick(void);
 
-		SLE_EXPORTS void BusyLoopSleep(float SleepTime);
+		void BusyLoopSleep(float SleepTime);
 
 		inline double TicksToSeconds(int64_t TickCount)
 		{

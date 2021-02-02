@@ -17,26 +17,26 @@ namespace sle
 		{
 		public:
 
-			SLE_EXPORTS void AddBoxCollider(float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
-			SLE_EXPORTS void AddCapsuleCollider(float radius, float halfHeight);
-			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, math::Quaternion rotation);
-			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, float distance);
-			SLE_EXPORTS void AddPlaneCollider(math::Vector3 position, math::Vector3 normal);
-			SLE_EXPORTS void SetCollisionFilters(uint32_t mask, uint32_t filter);
+			void AddBoxCollider(float width, float height, float depth, math::Vector3 relativePositon = math::Vector3(0, 0, 0));
+			void AddCapsuleCollider(float radius, float halfHeight);
+			void AddPlaneCollider(math::Vector3 position, math::Quaternion rotation);
+			void AddPlaneCollider(math::Vector3 position, float distance);
+			void AddPlaneCollider(math::Vector3 position, math::Vector3 normal);
+			void SetCollisionFilters(uint32_t mask, uint32_t filter);
 
-			SLE_EXPORTS math::Vector3 GetVelocity();
+			math::Vector3 GetVelocity();
 
-			SLE_EXPORTS void SetVelocity(math::Vector3 velocity);
-			SLE_EXPORTS void AddVelocity(math::Vector3 velocity, float maxV = 0.0f);
-			SLE_EXPORTS void AddForce(math::Vector3 force);
-			SLE_EXPORTS void AddTorque(math::Vector3 torque);
-			SLE_EXPORTS void SetPosition(math::Vector3 position);
-			SLE_EXPORTS void SetRotation(math::Quaternion rotation);
-			SLE_EXPORTS void MovePosition(math::Vector3 position);
-			SLE_EXPORTS void MoveRotation(math::Quaternion rotation);
+			void SetVelocity(math::Vector3 velocity);
+			void AddVelocity(math::Vector3 velocity, float maxV = 0.0f);
+			void AddForce(math::Vector3 force);
+			void AddTorque(math::Vector3 torque);
+			void SetPosition(math::Vector3 position);
+			void SetRotation(math::Quaternion rotation);
+			void MovePosition(math::Vector3 position);
+			void MoveRotation(math::Quaternion rotation);
 
-			SLE_EXPORTS bool CheckCollisionWith(uint32_t collisionLayer);
-			SLE_EXPORTS bool IsOverlaping(RigidBody* other);
+			bool CheckCollisionWith(uint32_t collisionLayer);
+			bool IsOverlaping(RigidBody* other);
 
 			Collider* GetCollider() { return &m_collider; };
 
@@ -44,7 +44,7 @@ namespace sle
 			\brief Set Kinematic behaviur.
 			Kinematic objects are not affected by forces and acceleration. Allow to controll object by MovePosition and MoveRotation.
 			*/
-			SLE_EXPORTS void IsKinematic(bool isKinematic);
+			void IsKinematic(bool isKinematic);
 
 			/**
 			\brief Get Kinematic state of the object.
@@ -64,7 +64,7 @@ namespace sle
 			bool m_isStatic;
 
 		private:
-			SLE_EXPORTS RigidBody(GameObject& gameObject, float mass, bool isStatic = false);
+			RigidBody(GameObject& gameObject, float mass, bool isStatic = false);
 		private:
 			Collider m_collider;
 

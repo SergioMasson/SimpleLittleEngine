@@ -33,7 +33,6 @@
 #include <map>
 #include <set>
 
-#include "types_c.h"
 #include "mathHelpers.h"
 #include "application.h"
 #include "gameObject.h"

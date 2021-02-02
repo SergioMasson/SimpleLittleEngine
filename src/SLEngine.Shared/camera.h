@@ -17,9 +17,9 @@ namespace sle
 				this->SetAsMainCamera();
 		}
 
-		SLE_EXPORTS static Camera* MainCamera();
+		static Camera* MainCamera();
 
-		SLE_EXPORTS void SetAsMainCamera();
+		void SetAsMainCamera();
 
 		// Public functions for controlling where the camera is and its orientation
 		void SetEyeAtUp(math::Vector3 eye, math::Vector3 at, math::Vector3 up)
@@ -108,10 +108,10 @@ namespace sle
 		inline math::Frustum GetWorldFrustum() const { return m_worldFrustum; };
 
 	private:
-		SLE_EXPORTS void SetLookDirection(math::Vector3 forward, math::Vector3 up);
-		SLE_EXPORTS void UpdateProjectionMatrix();
-		SLE_EXPORTS void UpdateViewMatrix();
-		SLE_EXPORTS void UpdateViewProjectionMatrix();
+		void SetLookDirection(math::Vector3 forward, math::Vector3 up);
+		void UpdateProjectionMatrix();
+		void UpdateViewMatrix();
+		void UpdateViewProjectionMatrix();
 
 	private:
 		math::Matrix4 m_viewMatrix;

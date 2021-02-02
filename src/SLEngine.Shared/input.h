@@ -176,30 +176,30 @@ namespace sle
 
 	namespace Input
 	{
-		SLE_EXPORTS void Initialize();
-		SLE_EXPORTS void Shutdown();
+		 void Initialize();
+		 void Shutdown();
 
-		SLE_EXPORTS void Update(float frameDelta);
-		SLE_EXPORTS void PostUpdate();
+		 void Update(float frameDelta);
+		 void PostUpdate();
 
-		SLE_EXPORTS bool IsAnyPressed(void);
+		 bool IsAnyPressed(void);
 
-		SLE_EXPORTS bool TryGetLastKeyboardType(char& key);
+		 bool TryGetLastKeyboardType(char& key);
 
-		SLE_EXPORTS bool IsPressed(KeyCode di);
-		SLE_EXPORTS bool IsFirstPressed(KeyCode di);
-		SLE_EXPORTS bool IsReleased(KeyCode di);
-		SLE_EXPORTS bool IsFirstReleased(KeyCode di);
+		 bool IsPressed(KeyCode di);
+		 bool IsFirstPressed(KeyCode di);
+		 bool IsReleased(KeyCode di);
+		 bool IsFirstReleased(KeyCode di);
 
-		SLE_EXPORTS float GetDurationPressed(KeyCode di);
+		 float GetDurationPressed(KeyCode di);
 
-		SLE_EXPORTS float GetAnalogInput(AnalogInput ai);
-		SLE_EXPORTS float GetTimeCorrectedAnalogInput(AnalogInput ai);
+		 float GetAnalogInput(AnalogInput ai);
+		 float GetTimeCorrectedAnalogInput(AnalogInput ai);
 
-		SLE_EXPORTS void SetKey(WPARAM key, bool isDown);
-		SLE_EXPORTS void SetKey(WPARAM key, bool isDown);
-		SLE_EXPORTS void SetMouseWheel(float delta);
-		SLE_EXPORTS void SetTypedChar(WPARAM key);
-		SLE_EXPORTS void UpdateMousePosition(float x, float y);
+		 void SetKey(WPARAM key, bool isDown);
+		 void SetKey(WPARAM key, bool isDown);
+		 void SetMouseWheel(float delta);
+		 void SetTypedChar(WPARAM key);
+		 void UpdateMousePosition(float x, float y);
 	}
 }

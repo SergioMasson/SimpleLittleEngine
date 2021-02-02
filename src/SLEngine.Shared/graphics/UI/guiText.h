@@ -20,20 +20,20 @@ namespace sle
 			class GuiText : public DrawableElement
 			{
 			public:
-				SLE_EXPORTS GuiText();
-				SLE_EXPORTS GuiText(DrawableElement* parent, float x, float y, float width, float height, float fontSize);
-				SLE_EXPORTS virtual void Draw(void) override;
+				GuiText();
+				GuiText(DrawableElement* parent, float x, float y, float width, float height, float fontSize);
+				virtual void Draw(void) override;
 
 				void SetText(std::wstring text) { m_text = text; }
 				std::wstring GetText() const { return m_text; };
 
-				SLE_EXPORTS void SetColor(Color color);
+				void SetColor(Color color);
 				Color GetColor() const { return m_color; };
 
-				SLE_EXPORTS void SetFontSize(float fontSize);
+				void SetFontSize(float fontSize);
 				float GetFontSize() const { return m_fontSize; }
 
-				SLE_EXPORTS void SetTextAlignment(TextAlignment alignment);
+				void SetTextAlignment(TextAlignment alignment);
 				TextAlignment GetTextAlignment() const { return m_alignment; }
 
 			private:
